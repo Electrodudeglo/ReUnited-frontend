@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ReUnited-frontend/ReUnited-frontend.Client/ReUnited-frontend.Client.csproj" />
+  <Project Path="ReUnited-frontend/ReUnited-frontend/ReUnited-frontend.csproj" />
+</Solution>
