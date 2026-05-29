@@ -4,4 +4,69 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@* <p>Longitude: @lon<br/>Latitude: @lat</p>
+ *@
+
+ <div>
+    @if (realPostCode)
+    {
+        <p>This is a real post code!</p>
+    }
+    else
+    {
+        <p>This is not a real post code.</p>
+    }
+</div>
+
+@*  <p>
+     @resp
+ </p> *@
+
+
+
+@code{
+    private static readonly string BASE_URL = "https://api.postcodes.io/postcodes";
+
+    public string resp { get; set; } = "";
+
+    public bool realPostCode = false;
+
+    //string lon = "";
+    //string lat = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLongLat("SW1A2AA");
+
+
+    }
+
+    public async Task GetLongLat(string postCode)
+    {
+        using (HttpClient httpClient = new HttpClient()) //1. create a new HttpClient object
+        {
+            string url = $"{BASE_URL}/{postCode}";
+
+            HttpResponseMessage response = await httpClient.GetAsync(url); //2. use GetAsync to make a GET request
+
+            string responseBody = await response.Content.ReadAsStringAsync(); // 3.Reads the response body as a string
+            Console.WriteLine(responseBody); //4. Write string to console
+            resp = responseBody;
+            //lon = responseBody.longitude;
+            if (response.IsSuccessStatusCode)
+            {
+                realPostCode = true;
+            }
+            else
+            {
+                realPostCode = false;
+            }
+        }
+    }
+
+    //public class ApiResponse()
+    //{
+    //    [JsonPropertyName("results")]
+    //    public Results Results { get; set; } = new Results();
+    //}
+}
