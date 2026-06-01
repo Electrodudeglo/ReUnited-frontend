@@ -1,25 +1,34 @@
-﻿
+﻿@using ReUnited_frontend.DataModels
+@using System.Text.Json.Serialization
+
+
+@if (_summaryLoader != null)
+{	
+	<div>
+		<LostItemsSummaryList LostItems="_summaryLoader"/>
+	</div>
+}
+
+else {
+
 <div>
-
-	<LostItemSummary LostItem="_summaryLoader"/>
-
+	<h3>Cannot load albums</h3>
+	<p>@errorMessage</p>
 </div>
-
-
+}
 
 @code {
-@using ReUnited_frontend.DataModels
 
-	private LostItem _summaryLoader { get; set; } = new();
+	private List<LostItem> _summaryLoader { get; set; } = new();
 
-	private string loadingIndicator = "";
+	private string errorMessage = "";
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
 			var http = new HttpClient();
-			var response = await http.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/1");
+			var response = await http.GetFromJsonAsync<List<LostItem>>($"http://localhost:5265/api/lostitems");
 
 		if (response != null)
 		{
@@ -28,9 +37,9 @@
 
 		}
 
-		catch
+		catch (Exception ex)
 		{
-			
+			errorMessage = $"An error occurred: {ex.Message}";
 		}
 	}
 
