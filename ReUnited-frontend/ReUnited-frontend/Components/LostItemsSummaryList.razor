@@ -1,15 +1,60 @@
 ﻿@using ReUnited_frontend.DataModels
-<h3>LostItemsSummaryList</h3>
 
-<div class="fixed-grid has-4-cols-widescreen has-3-cols-tablet has-2-cols-mobile">
-    <div class="grid">
-        @foreach (var lostItem in LostItems)
-        {
-            <div class="column">
-                <LostItemSummary LostItem="@lostItem" />
-            </div>
-        }
-    </div>
+<h3 class="title is-4">Lost Items</h3>
+
+<div class="table-container">
+    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item</th>
+                <th>City</th>
+                <th>Postcode</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Info</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in LostItems)
+            {
+                <tr>
+                    <th>
+                        <NavLink href="@($"/lostitems/{item.Id}")">
+                            @item.Id
+                        </NavLink>
+                    </th>
+
+                    <td>@item.ItemDescription</td>
+
+                    <td>@item.City</td>
+
+                    <td>@item.Postcode</td>
+
+                    <td>@item.Category</td>
+
+                    <td>@item.AdditionalInformation</td>
+
+                    <td>
+                        <figure class="image is-64x64">
+                            <img src="images/reunitedlogo.png" />
+                        </figure>
+                    </td>
+
+                    <td>
+                        <div>
+                            <strong>@item.Email</strong><br />
+                            @item.PhoneNumber
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
 </div>
 
 
