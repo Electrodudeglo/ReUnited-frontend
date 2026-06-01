@@ -1,0 +1,31 @@
+﻿@using ReUnited_frontend.DataModels
+<h3>LostItemSummary</h3>
+
+<div class="card" style="width: 250px">
+    <div class="card-image">
+        <figure class="image" style="width: 250px">
+            <NavLink href="@($"/albums/{LostItem.Id}")">
+                <img src="images/Meagainsttheworldcover.png"
+                     alt="Album image" />
+
+            </NavLink>
+        </figure>
+    </div>
+    <div class="card-content">
+        <div class="content">
+            <h4>@LostItem.ItemDescription</h4>
+            <p>@LostItem.City</p>
+            <p>@LostItem.Postcode</p>
+            <p>@LostItem.Email</p>
+            <p>@LostItem.PhoneNumber</p>
+            <p>@LostItem.Category</p>
+            <p>@LostItem.AdditionalInformation</p>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public LostItem LostItem { get; set; }
+}
