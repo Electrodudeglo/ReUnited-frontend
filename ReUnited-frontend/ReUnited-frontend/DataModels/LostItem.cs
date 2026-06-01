@@ -22,5 +22,27 @@ namespace ReUnited_frontend.DataModels
 
         public string Picture { get; set; } = string.Empty;
 
+        public LostItem(
+            int id,
+            string city,
+            string postcode,
+            string email,
+            string phoneNumber,
+            string category,
+            string itemDescription,
+            string additionalInformation,
+            string picture)
+        {
+            City = city;
+            Postcode = postcode;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Category = category;
+            ItemDescription = itemDescription;
+            AdditionalInformation = additionalInformation;
+            Picture = picture;
+        }
+
+
     }
 }
