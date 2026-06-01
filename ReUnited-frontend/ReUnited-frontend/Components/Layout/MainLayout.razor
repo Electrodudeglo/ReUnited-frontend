@@ -1,14 +1,22 @@
 ﻿@inherits LayoutComponentBase
 @using ReUnited_frontend.Components.UI
 
-<Header/>
 
-<main>
+<div class="page-wrapper">
 
-    @Body
+    <Header />
 
-</main>
+    <main>
 
+        @Body
+
+    </main>
+
+    <Footer />
+
+
+
+</div>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
