@@ -1,0 +1,37 @@
+﻿
+<div>
+
+	<LostItemSummary LostItem="_summaryLoader"/>
+
+</div>
+
+
+
+@code {
+@using ReUnited_frontend.DataModels
+
+	private LostItem _summaryLoader { get; set; } = new();
+
+	private string loadingIndicator = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var http = new HttpClient();
+			var response = await http.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/1");
+
+		if (response != null)
+		{
+			_summaryLoader = response;
+		}
+
+		}
+
+		catch
+		{
+			
+		}
+	}
+
+}
