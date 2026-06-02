@@ -1,0 +1,60 @@
+﻿@page "/lostitems/edit/{Id:int}"
+
+
+@if(LostItem == null)
+{
+	<div>
+		<h3>Cannot load lost items</h3>
+		<p>@errorMessage</p>
+	</div>
+
+}
+
+else
+{
+	
+ <div>
+	 <LostItemEditComponent EditLostItem="LostItem"/>
+ </div>
+
+}
+
+
+@code {
+@using ReUnited_frontend.DataModels
+	
+	[Parameter]
+	public LostItem LostItem { get; set; } = new();
+
+	[Parameter]
+	public int Id { get; set; }
+
+	public HttpClient Client = new HttpClient();
+
+	public bool isLoading = true;
+	private string? errorMessage = String.Empty;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+
+			LostItem = await Client.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}");
+			isLoading = false;
+
+		}
+
+		catch(Exception ex)
+		{
+		Console.WriteLine(ex.Message);
+		errorMessage = $"An error occurred: {ex.Message}";
+
+		}
+	}
+
+
+	
+
+
+}
