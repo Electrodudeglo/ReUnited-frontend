@@ -58,43 +58,5 @@
 
 @code {
     [Parameter]
-    public List<LostItem> LostItems { get; set; } = new List<LostItem>
-    {
-                new LostItem(
-                    1,
-                    "London",
-                    "SW1A1AA",
-                    "john.doe@example.com",
-                    "07123456789",
-                    "Wallet",
-                    "Black leather wallet",
-                    "Lost near station",
-                    "wallet.jpg"
-            ),
-                new LostItem(
-                    2,
-                    "London",
-                    "SW1A1AA",
-                    "john.doe@example.com",
-                    "07123456789",
-                    "Wallet",
-                    "Black leather wallet",
-                    "Lost near station",
-                    "wallet.jpg"
-            ),
-                new LostItem(
-                    3,
-                    "London",
-                    "SW1A1AA",
-                    "john.doe@example.com",
-                    "07123456789",
-                    "Wallet",
-                    "Black leather wallet",
-                    "Lost near station",
-                    "wallet.jpg"
-            )
-
-    };
-
-
+    public List<LostItem> LostItems { get; set; } = new();
 }
