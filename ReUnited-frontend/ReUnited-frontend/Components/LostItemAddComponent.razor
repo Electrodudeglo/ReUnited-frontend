@@ -1,20 +1,20 @@
-﻿@page "/lostitems/add"
-@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.DataModels
+@rendermode InteractiveServer
 
-<h3>AddLostItem</h3>
+<h3>AddLostItemComponent</h3>
 
 <EditForm Model="@LostItem">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
 
     <div>
         <label>Item:</label>
         <InputText @bind-Value="LostItem.ItemDescription" />
-        <ValidationMessage For="@(() => LostItem.ItemDescription)"/>
+        <ValidationMessage For="@(() => LostItem.ItemDescription)" />
     </div>
     <div>
         <label>City:</label>
         <InputText @bind-Value="LostItem.City" />
-        <ValidationMessage For="@(() => LostItem.City)"/>
+        <ValidationMessage For="@(() => LostItem.City)" />
     </div>
     <div>
         <label>Postcode:</label>
@@ -44,6 +44,9 @@
 
 </EditForm>
 
+
 @code {
-    private LostItem LostItem = new LostItem();
+    [Parameter]
+    public LostItem LostItem { get; set; } = new LostItem();
+
 }
