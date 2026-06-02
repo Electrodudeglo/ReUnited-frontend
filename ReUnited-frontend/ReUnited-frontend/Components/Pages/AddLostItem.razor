@@ -1,7 +1,49 @@
 ﻿@page "/lostitems/add"
+@using ReUnited_frontend.DataModels
 
 <h3>AddLostItem</h3>
 
-@code {
+<EditForm Model="@LostItem">
+    <DataAnnotationsValidator/>
 
+    <div>
+        <label>Item:</label>
+        <InputText @bind-Value="LostItem.ItemDescription" />
+        <ValidationMessage For="@(() => LostItem.ItemDescription)"/>
+    </div>
+    <div>
+        <label>City:</label>
+        <InputText @bind-Value="LostItem.City" />
+        <ValidationMessage For="@(() => LostItem.City)"/>
+    </div>
+    <div>
+        <label>Postcode:</label>
+        <InputText @bind-Value="LostItem.Postcode" />
+        <ValidationMessage For="@(() => LostItem.Postcode)" />
+    </div>
+    <div>
+        <label>Category:</label>
+        <InputText @bind-Value="LostItem.Category" />
+        <ValidationMessage For="@(() => LostItem.Category)" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <InputText @bind-Value="LostItem.AdditionalInformation" />
+        <ValidationMessage For="@(() => LostItem.AdditionalInformation)" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="LostItem.Email" />
+        <ValidationMessage For="@(() => LostItem.Email)" />
+    </div>
+    <div>
+        <label>Phone Number:</label>
+        <InputText @bind-Value="LostItem.PhoneNumber" />
+        <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
+    </div>
+
+</EditForm>
+
+@code {
+    private LostItem LostItem = new LostItem();
 }
