@@ -1,10 +1,46 @@
-﻿
+﻿<div class="box">
+	<div>
+		<label>City</label>
+		<InputText @bind-Value="EditLostItem.City"/>
+	</div>
+
+	<div>
+		<label>Postcode</label>
+		<InputText @bind-Value="EditLostItem.Postcode" />
+	</div>
+
+	<div>
+		<label>Email</label>
+		<InputText @bind-Value="EditLostItem.Email" />
+	</div>
+
+	<div>
+		<label>Category</label>
+		<InputText @bind-Value="EditLostItem.Category" />
+	</div>
+
+	<div>
+		<label>Item Description</label>
+		<InputText @bind-Value="EditLostItem.ItemDescription" />
+	</div>
+
+	<div>
+		<label>Additional Information</label>
+		<InputText @bind-Value="EditLostItem.AdditionalInformation" />
+	</div>
+
+	<button>Update</button>
+</div>
+
+
 
 
 @code {
 @using ReUnited_frontend.DataModels
 
-	
-	
+	[Parameter]
+	public LostItem EditLostItem { get; set; } = new();
+
+
 
 }
