@@ -33,6 +33,7 @@ namespace ReUnited_frontend.DataModels
             string additionalInformation,
             string picture)
         {
+            Id = id;
             City = city;
             Postcode = postcode;
             Email = email;
