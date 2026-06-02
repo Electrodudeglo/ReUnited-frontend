@@ -44,6 +44,6 @@ namespace ReUnited_frontend.DataModels
             Picture = picture;
         }
 
-
+        public LostItem() { }
     }
 }
