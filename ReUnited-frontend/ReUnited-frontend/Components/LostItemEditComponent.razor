@@ -29,7 +29,13 @@
 		<InputText @bind-Value="EditLostItem.AdditionalInformation" />
 	</div>
 
-	<button>Update</button>
+	<button @onclick="SaveItem">Update</button>
+
+	<div class="mt-5">
+
+		@SuccessMessage
+
+	</div>
 </div>
 
 
@@ -37,10 +43,21 @@
 
 @code {
 @using ReUnited_frontend.DataModels
+@rendermode InteractiveServer
 
 	[Parameter]
 	public LostItem EditLostItem { get; set; } = new();
 
+	[Parameter]
+	public string SuccessMessage { get; set; } = "";
 
+	[Parameter]
+	public EventCallback<LostItem> OnSave { get; set; }
+
+	private async Task SaveItem()
+	{
+		Console.WriteLine("Pressing");
+		await OnSave.InvokeAsync(EditLostItem);
+	}
 
 }

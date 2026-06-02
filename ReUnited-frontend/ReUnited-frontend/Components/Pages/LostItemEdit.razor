@@ -7,14 +7,11 @@
 		<h3>Cannot load lost items</h3>
 		<p>@errorMessage</p>
 	</div>
-
 }
-
 else
-{
-	
+{	
  <div>
-	 <LostItemEditComponent EditLostItem="LostItem"/>
+	 <LostItemEditComponent EditLostItem="LostItem" SuccessMessage=""/>
  </div>
 
 }
@@ -31,6 +28,8 @@ else
 	[Parameter]
 	public int Id { get; set; }
 
+	public string SendSuccess { get; set; } = "";
+
 	public HttpClient Client = new HttpClient();
 
 	public bool isLoading = true;
@@ -43,7 +42,7 @@ else
 		{
 			var response = await Client.PatchAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}",LostItem, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-			var isSuccess = response.EnsureSuccessStatusCode();
+			SendSuccess = response.EnsureSuccessStatusCode().Content.ToString();
 
 			isLoading = false;
 
