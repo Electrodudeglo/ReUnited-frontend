@@ -22,7 +22,9 @@ else
 
 @code {
 @using ReUnited_frontend.DataModels
-	
+@using System.Text.Json
+
+
 	[Parameter]
 	public LostItem LostItem { get; set; } = new();
 
@@ -39,8 +41,10 @@ else
 	{
 		try
 		{
+			var response = await Client.PatchAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}",LostItem, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-			LostItem = await Client.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}");
+			var isSuccess = response.EnsureSuccessStatusCode();
+
 			isLoading = false;
 
 		}
