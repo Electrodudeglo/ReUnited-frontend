@@ -34,7 +34,7 @@ else
     {
         try
         {
-            LostItem = await Client.GetFromJsonAsync<LostItem>($"https://localhost:5265/albums/{Id}");
+            LostItem = await Client.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}");
             isLoading = false;
         }
         catch (Exception ex)
