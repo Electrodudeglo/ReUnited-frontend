@@ -3,7 +3,7 @@
 
 <h3>AddLostItemComponent</h3>
 
-<EditForm Model="@LostItem" OnInvalidSubmit="HandleValidSubmit">
+<EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
 
     <div>
@@ -42,7 +42,7 @@
         <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
     </div>
 
-    <button type="submit" @onclick="HandleValidSubmit">Submit</button>
+    <button type="submit">Submit</button>
 </EditForm>
 
 
