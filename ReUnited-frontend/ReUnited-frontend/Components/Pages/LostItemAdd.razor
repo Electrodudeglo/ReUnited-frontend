@@ -12,8 +12,13 @@
 }
 else
 {
-    <div>
-        <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"/>
+    <div class="fixed-grid has-3-cols">
+        <div class="grid">
+            <div class="cell is-col-start-2">
+                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem" />
+            </div>
+
+        </div>
     </div>
 }
 
