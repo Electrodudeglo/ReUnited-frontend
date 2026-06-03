@@ -1,0 +1,87 @@
+﻿@page "/login"
+@using System.Security.Claims
+@using ReUnited.frontend.Auth
+
+<h3>Login</h3>
+<EditForm Model="LoginData" OnValidSubmit="AttemptLogin" FormName="LoginForm">
+    <div>
+        <label>Username</label>
+        <InputText @bind-Value="LoginData.Username" />
+    </div>
+
+    <div>
+        <label>Password</label>
+        <InputText @bind-Value="LoginData.Password" type="password" />
+    </div>
+    <br />
+    <button type="submit">Login</button>
+
+    <br />
+    <br />
+</EditForm>
+
+
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <!-- Only Admins can see this -->
+        <button class="btn btn-danger">Delete User</button>
+        <a href="/admin-dashboard">Admin Dashboard</a>
+    </Authorized>
+    <NotAuthorized>
+        <!-- Displayed to regular users or logged-out users -->
+        <p>You do not have permission to view this section.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject]
+    private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
+
+    private LoginModel LoginData { get; set; } = new();
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+    private HttpClient Client = new HttpClient();
+    public bool isLoading = true;
+    private string? errorMessage = String.Empty;
+
+    private async Task AttemptLogin()
+    {
+        try
+        {
+            var response = await Client.PostAsJsonAsync<LoginModel>($"http://localhost:5265/api/auth/login", LoginData);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorDetails = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(errorDetails);
+            }
+
+            if (response != null)
+            {
+                response.EnsureSuccessStatusCode();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, LoginData.Username),
+                // Hard-coded Admin role for now:
+                new Claim(ClaimTypes.Role, "Admin")
+            };
+
+            var customProvider = (MyAuthStateProvider)AuthStateProvider;
+            customProvider.MarkUserAsAuthenticated(claims);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            errorMessage = $"An error occurred: {ex.Message}";
+
+        }
+    }
+}

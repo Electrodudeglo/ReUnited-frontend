@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Authorization;
+using ReUnited.frontend.Auth;
 using ReUnited_frontend.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddScoped<AuthenticationStateProvider, MyAuthStateProvider>();
+builder.Services.AddAuthenticationCore();
 
 var app = builder.Build();
 
