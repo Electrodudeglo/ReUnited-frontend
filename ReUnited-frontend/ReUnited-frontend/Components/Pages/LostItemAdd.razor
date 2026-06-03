@@ -12,7 +12,7 @@
 else
 {
     <div>
-        <LostItemAddComponent LostItem="@LostItem" />
+        <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"/>
     </div>
 }
 
@@ -28,7 +28,7 @@ else
     private string? errorMessage = String.Empty;
 
 
-    protected override async Task OnInitializedAsync()
+    private async Task SaveLostItem()
     {
         try
         {
