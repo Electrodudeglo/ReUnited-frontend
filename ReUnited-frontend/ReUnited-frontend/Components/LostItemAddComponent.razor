@@ -41,6 +41,11 @@
         <InputText @bind-Value="LostItem.PhoneNumber" />
         <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
     </div>
+    <div>
+        <label>Picture:</label>
+        <InputText @bind-Value="LostItem.Picture" />
+        <ValidationMessage For="@(() => LostItem.Picture)" />
+    </div>
 
     <button type="submit">Submit</button>
 </EditForm>
