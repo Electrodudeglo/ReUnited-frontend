@@ -1,61 +1,86 @@
 ﻿@page "/lostitems/edit/{Id:int}"
+@using ReUnited_frontend.DataModels
+@rendermode InteractiveServer
 
-@if(LostItem == null)
+
+@if (isLoading)
 {
-	<div>
-		<h3>Cannot load lost items</h3>
-		<p>@errorMessage</p>
-	</div>
+    <p>Loading...</p>
+}
+else if (errorMessage != null)
+{
+    <div class="notification is-danger">
+        <p>@errorMessage</p>
+    </div>
 }
 else
-{	
- <div>
-		<LostItemEditComponent EditLostItem="LostItem" SuccessMessage="SendSuccess" />
- </div>
-
+{
+    <LostItemEditComponent EditLostItem="LostItem" OnSave="HandleSave"SuccessMessage="SuccessItem" />
 }
 
-
 @code {
-@using ReUnited_frontend.DataModels
-@using System.Text.Json
+    [Parameter]
+    public int Id { get; set; }
 
-	[Parameter]
-	public LostItem LostItem { get; set; } = new();
+    public LostItem LostItem { get; set; } = new();
+    public LostItem SuccessItem { get; set; } = new();
 
-	[Parameter]
-	public int Id { get; set; }
+    public bool isLoading = true;
+    public string? errorMessage;
 
-	[Parameter]
-	public LostItem SendSuccess { get; set; } = new();
+    public HttpClient Client = new HttpClient();
 
-	public HttpClient Client = new HttpClient();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Load the item from the API
+            LostItem? response = await Client.GetFromJsonAsync<LostItem>(
+                $"http://localhost:5265/api/lostitems/{Id}");
 
-	public bool isLoading = true;
-	private string? errorMessage = String.Empty;
+            if (response == null)
+            {
+                errorMessage = "Could not load lost item.";
+            }
+            else
+            {
+                LostItem = response;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading item: {ex.Message}";
+        }
 
+        isLoading = false;
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		try
-		{
-			var response = await Client.PutAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}",LostItem, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    private async Task HandleSave(LostItem updatedItem)
+    {
+        Console.WriteLine("PARENT RECEIVED UPDATED DATA:");
+        Console.WriteLine(updatedItem.City);
+        Console.WriteLine(updatedItem.Postcode);
+        Console.WriteLine(updatedItem.Email);
 
-			if(response != null)
-			{	
-				SendSuccess = LostItem;
-			}
+        try
+        {
+            var response = await Client.PutAsJsonAsync<LostItem>(
+                $"http://localhost:5265/api/lostitems/{Id}",
+                updatedItem);
 
-			isLoading = false;
-
-		}
-
-		catch(Exception ex)
-		{
-		Console.WriteLine(ex.Message);
-		errorMessage = $"An error occurred: {ex.Message}";
-
-		}
-	}
-
+            if (response.IsSuccessStatusCode)
+            {
+                SuccessItem = updatedItem;
+                Console.WriteLine("Update successful");
+            }
+            else
+            {
+                errorMessage = "Failed to update item.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error updating item: {ex.Message}";
+        }
+    }
 }
