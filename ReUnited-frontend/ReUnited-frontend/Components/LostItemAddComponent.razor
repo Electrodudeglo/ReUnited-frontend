@@ -3,7 +3,7 @@
 
 <h3>AddLostItemComponent</h3>
 
-<EditForm Model="@LostItem">
+<EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
 
     <div>
@@ -41,12 +41,26 @@
         <InputText @bind-Value="LostItem.PhoneNumber" />
         <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
     </div>
+    <div>
+        <label>Picture:</label>
+        <InputText @bind-Value="LostItem.Picture" />
+        <ValidationMessage For="@(() => LostItem.Picture)" />
+    </div>
 
+    <button type="submit">Submit</button>
 </EditForm>
 
 
 @code {
     [Parameter]
-    public LostItem LostItem { get; set; } = new LostItem();
+    public LostItem LostItem { get; set; } = new();
 
+    [Parameter]
+    public EventCallback<LostItem> OnSave { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        Console.WriteLine("HandleValidSubmit works");
+        await OnSave.InvokeAsync(LostItem);
+    }
 }

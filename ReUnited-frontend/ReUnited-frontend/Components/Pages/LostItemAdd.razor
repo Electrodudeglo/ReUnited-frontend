@@ -1,4 +1,5 @@
 ﻿@page "/lostitems/add"
+@rendermode InteractiveServer
 @using ReUnited_frontend.DataModels
 
 
@@ -12,28 +13,27 @@
 else
 {
     <div>
-        <LostItemAddComponent LostItem="@LostItem" />
+        <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"/>
     </div>
 }
 
 
 @code {
-    [Parameter]
-    public LostItem? LostItem { get; set; }
+    private LostItem? LostItem { get; set; } = new();
 
     [Parameter]
     public int Id { get; set; }
 
-    public HttpClient Client = new HttpClient();
+    private HttpClient Client = new HttpClient();
     public bool isLoading = true;
     private string? errorMessage = String.Empty;
 
 
-    protected override async Task OnInitializedAsync()
+    private async Task SaveLostItem(LostItem lostItem)
     {
         try
         {
-            var response = await Client.PostAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems", LostItem);
+            var response = await Client.PostAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems", lostItem);
 
             if (response != null)
             {
