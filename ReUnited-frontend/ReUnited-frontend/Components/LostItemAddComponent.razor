@@ -3,7 +3,7 @@
 
 <h3>AddLostItemComponent</h3>
 
-<EditForm Model="@LostItem" >
+<EditForm Model="@LostItem" OnInvalidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
 
     <div>
@@ -52,4 +52,8 @@
     [Parameter]
     public EventCallback OnSave { get; set; }
 
+    private async Task HandleValidSubmit()
+    {
+        await OnSave.InvokeAsync();
+    }
 }
