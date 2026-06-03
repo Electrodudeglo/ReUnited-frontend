@@ -31,6 +31,8 @@
 
 	<button @onclick="SaveItem">Update</button>
 
+	
+
 	<div class="mt-5">
 
 		@SuccessMessage
@@ -49,13 +51,14 @@
 	public LostItem EditLostItem { get; set; } = new();
 
 	[Parameter]
-	public string SuccessMessage { get; set; } = "";
+	public LostItem SuccessMessage { get; set; } = new();
 
 	[Parameter]
 	public EventCallback<LostItem> OnSave { get; set; }
 
 	private async Task SaveItem()
 	{
+		Console.WriteLine(SuccessMessage.City);
 		Console.WriteLine("Pressing");
 		await OnSave.InvokeAsync(EditLostItem);
 	}

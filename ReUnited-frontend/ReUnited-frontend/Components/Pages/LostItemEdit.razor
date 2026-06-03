@@ -1,6 +1,5 @@
 ﻿@page "/lostitems/edit/{Id:int}"
 
-
 @if(LostItem == null)
 {
 	<div>
@@ -11,7 +10,7 @@
 else
 {	
  <div>
-	 <LostItemEditComponent EditLostItem="LostItem" SuccessMessage=""/>
+		<LostItemEditComponent EditLostItem="LostItem" SuccessMessage="SendSuccess" />
  </div>
 
 }
@@ -21,14 +20,14 @@ else
 @using ReUnited_frontend.DataModels
 @using System.Text.Json
 
-
 	[Parameter]
 	public LostItem LostItem { get; set; } = new();
 
 	[Parameter]
 	public int Id { get; set; }
 
-	public string SendSuccess { get; set; } = "";
+	[Parameter]
+	public LostItem SendSuccess { get; set; } = new();
 
 	public HttpClient Client = new HttpClient();
 
@@ -40,9 +39,12 @@ else
 	{
 		try
 		{
-			var response = await Client.PatchAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}",LostItem, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			var response = await Client.PutAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}",LostItem, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-			SendSuccess = response.EnsureSuccessStatusCode().Content.ToString();
+			if(response != null)
+			{	
+				SendSuccess = LostItem;
+			}
 
 			isLoading = false;
 
@@ -55,9 +57,5 @@ else
 
 		}
 	}
-
-
-	
-
 
 }
