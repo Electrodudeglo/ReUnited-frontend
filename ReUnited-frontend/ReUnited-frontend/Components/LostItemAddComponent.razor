@@ -55,6 +55,6 @@
 
     private async Task HandleValidSubmit()
     {
-        await OnSave.InvokeAsync();
+        await OnSave.InvokeAsync(LostItem);
     }
 }
