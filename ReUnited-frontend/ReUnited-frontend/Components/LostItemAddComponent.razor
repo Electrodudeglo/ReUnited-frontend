@@ -3,7 +3,7 @@
 
 <h3>AddLostItemComponent</h3>
 
-<EditForm Model="@LostItem">
+<EditForm Model="@LostItem" >
     <DataAnnotationsValidator />
 
     <div>
@@ -48,5 +48,8 @@
 @code {
     [Parameter]
     public LostItem LostItem { get; set; } = new LostItem();
+
+    [Parameter]
+    public EventCallback OnSave { get; set; }
 
 }
