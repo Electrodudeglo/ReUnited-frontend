@@ -18,7 +18,7 @@ else
 
 
 @code {
-    public LostItem? LostItem { get; set; }
+    private LostItem? LostItem { get; set; } = new();
 
     [Parameter]
     public int Id { get; set; }
