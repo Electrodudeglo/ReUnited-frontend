@@ -42,7 +42,7 @@
         <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit" @onclick="HandleValidSubmit">Submit</button>
 </EditForm>
 
 
