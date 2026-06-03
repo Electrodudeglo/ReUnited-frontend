@@ -89,14 +89,7 @@
         </p>
     </div>
 
-    <div class="field">
-        <label class="label">Picture</label>
-        <div class="control">
-            <InputText class="input"
-                       @bind-Value="LostItem.Picture" />
-        </div>
-        <ValidationMessage For="@(() => LostItem.Picture)" />
-    </div>
+    <PictureUploadComponent />
 
     <div class="field is-grouped">
         <div class="control">
