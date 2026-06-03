@@ -1,20 +1,20 @@
-﻿@page "/lostitems/add"
-@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.DataModels
+@rendermode InteractiveServer
 
-<h3>AddLostItem</h3>
+<h3>AddLostItemComponent</h3>
 
-<EditForm Model="@LostItem">
-    <DataAnnotationsValidator/>
+<EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
 
     <div>
         <label>Item:</label>
         <InputText @bind-Value="LostItem.ItemDescription" />
-        <ValidationMessage For="@(() => LostItem.ItemDescription)"/>
+        <ValidationMessage For="@(() => LostItem.ItemDescription)" />
     </div>
     <div>
         <label>City:</label>
         <InputText @bind-Value="LostItem.City" />
-        <ValidationMessage For="@(() => LostItem.City)"/>
+        <ValidationMessage For="@(() => LostItem.City)" />
     </div>
     <div>
         <label>Postcode:</label>
@@ -41,9 +41,26 @@
         <InputText @bind-Value="LostItem.PhoneNumber" />
         <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
     </div>
+    <div>
+        <label>Picture:</label>
+        <InputText @bind-Value="LostItem.Picture" />
+        <ValidationMessage For="@(() => LostItem.Picture)" />
+    </div>
 
+    <button type="submit">Submit</button>
 </EditForm>
 
+
 @code {
-    private LostItem LostItem = new LostItem();
+    [Parameter]
+    public LostItem LostItem { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<LostItem> OnSave { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        Console.WriteLine("HandleValidSubmit works");
+        await OnSave.InvokeAsync(LostItem);
+    }
 }
