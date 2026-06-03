@@ -15,7 +15,13 @@ else if (errorMessage != null)
 }
 else
 {
-    <LostItemEditComponent EditLostItem="LostItem" OnSave="HandleSave"SuccessMessage="SuccessItem" />
+    <div class="fixed-grid has-3-cols">
+        <div class="grid">
+            <div class="cell is-col-start-2">
+                <LostItemEditComponent EditLostItem="LostItem" OnSave="HandleSave" SuccessMessage="SuccessItem" />
+            </div>
+        </div>
+    </div>
 }
 
 @code {

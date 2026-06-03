@@ -1,43 +1,81 @@
-﻿<div class="box">
-	<div>
-		<label>City</label>
-		<InputText @bind-Value="EditLostItem.City"/>
-	</div>
+﻿<div class="field">
+  <label class="label">Item Name</label>
+  <div class="control">
+    <InputText class="input" @bind-Value="EditLostItem.ItemDescription"/>
+  </div>
+</div>
 
-	<div>
-		<label>Postcode</label>
-		<InputText @bind-Value="EditLostItem.Postcode" />
-	</div>
+<div class="field">
+  <label class="label">Email</label>
+  <div class="control">
+    <InputText class="input" @bind-Value="EditLostItem.Email"/>
+    <span class="icon is-small is-left">
+      <i class="fas fa-envelope"></i>
+    </span>
+    <span class="icon is-small is-right">
+      <i class="fas fa-exclamation-triangle"></i>
+    </span>
+  </div>
+  @* <p class="help is-danger">This email is invalid</p> *@
+</div>
 
-	<div>
-		<label>Email</label>
-		<InputText @bind-Value="EditLostItem.Email" />
-	</div>
+<div class="field">
+    <label class="label">Phone Number</label>
+    <div class="control">
+        <InputText class="input" @bind-Value="EditLostItem.PhoneNumber" />
+        <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+        </span>
+    </div>
+    @* <p class="help is-danger">This email is invalid</p> *@
+</div>
 
-	<div>
-		<label>Category</label>
-		<InputText @bind-Value="EditLostItem.Category" />
-	</div>
 
-	<div>
-		<label>Item Description</label>
-		<InputText @bind-Value="EditLostItem.ItemDescription" />
-	</div>
+<div class="field">
+    <label class="label">Post Code</label>
+    <div class="control">
+        <InputText class="input" @bind-Value="EditLostItem.PhoneNumber" />
+        <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+            <i class="fas fa-exclamation-triangle"></i>
+        </span>
+    </div>
+    @* <p class="help is-danger">This email is invalid</p> *@
+</div>
 
-	<div>
-		<label>Additional Information</label>
-		<InputText @bind-Value="EditLostItem.AdditionalInformation" />
-	</div>
 
-	<button @onclick="SaveItem">Update</button>
+<div class="field">
+  <label class="label">Category</label>
+  <div class="control">
+    <div class="select">
+      <select>
+        <option>Select Category</option>
+        <option>Electronics</option>
+        <option>Keys</option>
+      </select>
+    </div>
+  </div>
+</div>
 
-	
+<div class="field">
+  <label class="label">Additional Information</label>
+  <div class="control">
+    <InputTextArea class="textarea" @bind-Value="EditLostItem.AdditionalInformation"/>
+  </div>
+</div>
 
-	<div class="mt-5">
-
-		@SuccessMessage
-
-	</div>
+<div class="field is-grouped mb-5">
+  <div class="control">
+    <button class="button is-link">Submit</button>
+  </div>
+  <div class="control">
+    <button class="button is-link is-light">Cancel</button>
+  </div>
 </div>
 
 
@@ -58,8 +96,6 @@
 
 	private async Task SaveItem()
 	{
-		Console.WriteLine(SuccessMessage.City);
-		Console.WriteLine("Pressing");
 		await OnSave.InvokeAsync(EditLostItem);
 	}
 
