@@ -4,14 +4,34 @@
 
 <h3 class="title is-4">Lost Items</h3>
 
-<div class="buttons">
-    @foreach (var cat in Categories)
-    {
-        <button type=button class="button @(cat.IsSelected ? "is-primary is-outlined" : "is-dark is-outlined")" @onclick="() => ToggleCategory(cat)">
-            @cat.Name
-        </button>
-    }
+<div class="container is-fluid px-4">
+    <button type="button" class="button @(IsFilterDropdownOpen ? "is-success is-outlined" : "is-dark")"
+            @onclick="ToggleFilterDropDown">
+        Filters
+    </button>
+
+    
+
+    <div>
+        <div class="buttons mt-2">
+            <div class="buttons">
+                @if (IsFilterDropdownOpen)
+                {
+                    
+                    foreach (var cat in Categories)
+                    {
+                        <button type=button class="button @(cat.IsSelected ? "is-primary is-outlined" : "is-dark is-outlined")" @onclick="() => ToggleCategory(cat)">
+                            @cat.Name
+                        </button>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
 </div>
+
+<br />
 
 <div class="table-container">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
@@ -76,6 +96,13 @@
     public List<LostItem> LostItems { get; set; } = new();
 
     public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+
+    public bool IsFilterDropdownOpen { get; set; }
+
+    public void ToggleFilterDropDown()
+    {
+        IsFilterDropdownOpen = !IsFilterDropdownOpen;
+    }
 
 
     public void ToggleCategory(CategoryItem item)
