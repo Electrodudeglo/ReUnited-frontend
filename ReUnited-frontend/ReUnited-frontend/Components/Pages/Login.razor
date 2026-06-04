@@ -5,6 +5,7 @@
 @page "/login"
 @rendermode InteractiveServer
 @inject HttpClient Http
+@inject NavigationManager Nav
 
 
 <input @bind="Username" placeholder="Username" />
@@ -68,5 +69,6 @@
         User.Token = token;
         User.Authenticated = true;
 
+        Nav.NavigateTo("/");
     }
 }
