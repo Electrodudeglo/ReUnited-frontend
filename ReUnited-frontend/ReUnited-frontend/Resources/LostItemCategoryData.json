@@ -1,29 +1,32 @@
 [
-  {
-    "Name": "Phone"
-  },
-  {
-    "Name": "Bag"
-  },
-  {
-    "Name": "Wallet"
-  },
-  {
-    "Name": "Keys"
-  },
-  {
-    "Name": "Jewellery"
-  },
-  {
-    "Name": "Clothing"
-  },
-  {
-    "Name": "Documents"
-  },
-  {
-    "Name": "Sports Equipment"
-  },
-  {
-    "Name": "Laptop"
-  }
+  { "Name": "Accessories" },
+  { "Name": "Bag" },
+  { "Name": "Books" },
+  { "Name": "Card Holder" },
+  { "Name": "Cash" },
+  { "Name": "Clothing" },
+  { "Name": "Documents" },
+  { "Name": "Earphones" },
+  { "Name": "Electronics" },
+  { "Name": "Glasses" },
+  { "Name": "Headphones" },
+  { "Name": "ID Card" },
+  { "Name": "Jewellery" },
+  { "Name": "Keys" },
+  { "Name": "Laptop" },
+  { "Name": "Lunch Box" },
+  { "Name": "Medical Item" },
+  { "Name": "Miscellaneous" },
+  { "Name": "Notebook" },
+  { "Name": "Passport" },
+  { "Name": "Pen" },
+  { "Name": "Phone" },
+  { "Name": "Phone Charger" },
+  { "Name": "Purse" },
+  { "Name": "Sports Equipment" },
+  { "Name": "Tablet" },
+  { "Name": "Travel Card" },
+  { "Name": "Umbrella" },
+  { "Name": "Wallet" },
+  { "Name": "Watch" }
 ]
