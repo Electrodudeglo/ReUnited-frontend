@@ -25,49 +25,45 @@ else
 }
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
+	[Parameter]
+	public int Id { get; set; }
 
-    public LostItem LostItem { get; set; } = new();
-    public LostItem SuccessItem { get; set; } = new();
+	public LostItem LostItem { get; set; } = new();
+	public bool SuccessItem { get; set; }
 
-    public bool isLoading = true;
-    public string? errorMessage;
+	public bool isLoading = true;
+	public string? errorMessage;
 
-    public HttpClient Client = new HttpClient();
+	public HttpClient Client = new HttpClient();
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            // Load the item from the API
-            LostItem? response = await Client.GetFromJsonAsync<LostItem>(
-                $"http://localhost:5265/api/lostitems/{Id}");
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			// Load the item from the API
+			LostItem? response = await Client.GetFromJsonAsync<LostItem>(
+				$"http://localhost:5265/api/lostitems/{Id}");
 
-            if (response == null)
-            {
-                errorMessage = "Could not load lost item.";
-            }
-            else
-            {
-                LostItem = response;
-            }
-        }
-        catch (Exception ex)
-        {
-            errorMessage = $"Error loading item: {ex.Message}";
-        }
+			if (response == null)
+			{
+				errorMessage = "Could not load lost item.";
+			}
+			else
+			{
+				LostItem = response;
+			}
+		}
+		catch (Exception ex)
+		{
+			errorMessage = $"Error loading item: {ex.Message}";
+		}
 
-        isLoading = false;
-    }
+		isLoading = false;
+	}
 
-    private async Task HandleSave(LostItem updatedItem)
-    {
-        Console.WriteLine("PARENT RECEIVED UPDATED DATA:");
-        Console.WriteLine(updatedItem.City);
-        Console.WriteLine(updatedItem.Postcode);
-        Console.WriteLine(updatedItem.Email);
-
+	private async Task HandleSave(LostItem updatedItem)
+	{
+			
         try
         {
             var response = await Client.PutAsJsonAsync<LostItem>(
@@ -76,8 +72,8 @@ else
 
             if (response.IsSuccessStatusCode)
             {
-                SuccessItem = updatedItem;
-                Console.WriteLine("Update successful");
+                SuccessItem = true;
+                
             }
             else
             {
