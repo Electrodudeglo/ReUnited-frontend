@@ -9,6 +9,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+/ReUnited-frontend/ReUnited-frontend/appsettings.json
+/ReUnited-frontend/ReUnited-frontend/appsettings.Development.json
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
