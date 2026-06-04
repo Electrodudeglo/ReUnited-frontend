@@ -10,7 +10,7 @@
         <label class="label">Item Description</label>
 
         <div class="control">
-            <InputText class="input" 
+            <InputText class="input"
                        placeholder="e.g. Black iPhone 15 with a cracked screen"
                        @bind-Value="LostItem.ItemDescription" />
         </div>
@@ -81,7 +81,7 @@
 
         <ValidationMessage For="@(() => LostItem.Email)" />
     </div>
-    
+
     <div class="field">
         <label class="label">Phone Number</label>
 
@@ -96,7 +96,7 @@
         </p>
     </div>
 
-    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected"/>
+    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected" />
 
     <div class="field is-grouped">
         <div class="control">
@@ -106,9 +106,11 @@
         </div>
 
         <div class="control">
-            <button type="button" class="button is-light">
-                Cancel
-            </button>
+            <NavLink href="@("/")">
+                <button type="button" class="button is-light">
+                    Cancel
+                </button>
+            </NavLink>
         </div>
     </div>
 </EditForm>
