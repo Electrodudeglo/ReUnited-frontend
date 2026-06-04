@@ -29,7 +29,7 @@
 		<InputText @bind-Value="EditLostItem.AdditionalInformation" />
 	</div>
 
-	<button>Update</button>
+	<button @onclick="SaveItem">Update</button>
 </div>
 
 
@@ -40,6 +40,20 @@
 
 	[Parameter]
 	public LostItem EditLostItem { get; set; } = new();
+
+	[Parameter]
+	public bool processEdit { get; set; } = false;
+
+	[Parameter]
+	public EventCallback<LostItem> OnSave { get; set; }
+
+
+	private async Task SaveItem()
+	{
+
+		await OnSave.InvokeAsync(EditLostItem);
+	
+	}
 
 
 
