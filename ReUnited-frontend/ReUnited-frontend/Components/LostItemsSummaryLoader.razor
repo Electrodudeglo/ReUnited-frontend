@@ -6,10 +6,16 @@
 {
 	<div>
 		<LostItemsSummaryList 
-			LostItems="_summaryLoader"
-			OnDeleteRequested="OpenDeleteModal" />
+			LostItems="_summaryLoader"/>
 	</div>
 	
+	@if(showDeleteModal)
+	{
+		
+		<LostItemDeleteComponent/>
+
+	}
+
 }
 
 else {
@@ -26,7 +32,7 @@ else {
 
 	private string errorMessage = "";
 
-	private bool showDeleteModal = false;
+	private bool showDeleteModal = true;
 
 	private LostItem? selectedItem;
 

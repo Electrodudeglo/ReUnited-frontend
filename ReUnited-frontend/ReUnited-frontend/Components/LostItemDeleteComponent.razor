@@ -1,78 +1,14 @@
-﻿@using ReUnited_frontend.DataModels
+﻿@using 
 
 
 @if (Show)
 {
-    <div class="modal is-active">
-
-        <div class="modal-background" @onclick="Close"></div>
-
-        <div class="modal-card">
-
-            <header class="modal-card-head">
-                <p class="modal-card-title">Confirm Delete</p>
-
-                <button class="delete"
-                        aria-label="close"
-                        @onclick="Close">
-                </button>
-            </header>
-
-            <section class="modal-card-body">
-
-                <p>Are you sure you want to delete this item?</p>
-
-                <br />
-
-                <strong>@Item?.ItemDescription</strong>
-
-                <p>@Item?.City</p>
-
-            </section>
-
-            <footer class="modal-card-foot">
-
-                <button class="button is-danger"
-                        @onclick="ConfirmDelete">
-                    Delete
-                </button>
-
-                <button class="button"
-                        @onclick="Close">
-                    Cancel
-                </button>
-
-            </footer>
-
-        </div>
-
-    </div>
+   
 }
 
 @code {
 
-    [Parameter]
-    public LostItem? Item { get; set; }
 
-    [Parameter]
-    public bool Show { get; set; }
-
-    [Parameter]
-    public EventCallback OnClose { get; set; }
-
-    [Parameter]
-    public EventCallback<LostItem> OnDeleteConfirmed { get; set; }
-
-    private async Task Close()
-    {
-        await OnClose.InvokeAsync();
-    }
-
-    private async Task ConfirmDelete()
-    {
-        if (Item != null)
-        {
-            await OnDeleteConfirmed.InvokeAsync(Item);
-        }
-    }
+    public 
+    
 }
