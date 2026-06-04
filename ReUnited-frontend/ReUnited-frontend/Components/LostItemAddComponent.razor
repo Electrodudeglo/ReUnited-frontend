@@ -34,6 +34,7 @@
         <label class="label">Postcode</label>
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. SW1A 1AA"
                        @bind-Value="LostItem.Postcode" />
         </div>
         <ValidationMessage For="@(() => LostItem.Postcode)" />
