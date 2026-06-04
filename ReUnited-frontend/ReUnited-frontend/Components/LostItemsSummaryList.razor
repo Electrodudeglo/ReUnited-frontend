@@ -2,6 +2,15 @@
 
 <h3 class="title is-4">Lost Items</h3>
 
+<div class="buttons">
+    @foreach (var cat in Categories)
+    {
+        <button @onclick="()=>ToggleCategory(cat)">
+            @cat.Name
+        </button>
+    }
+</div>
+
 <div class="table-container">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
 
@@ -59,4 +68,25 @@
 @code {
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
+
+    public class CategoryItem
+    {
+        public string Name { get; set; } = "";
+        public bool IsSelected { get; set; } = false;
+    }
+
+    public List<CategoryItem> Categories { get; set; } = new()
+    {
+        new() { Name = "Phone" },
+        new() { Name = "Bag" },
+        new() { Name = "Wallet" },
+        new() { Name = "Keys" },
+        new() { Name = "Jewellery" }
+    };
+
+
+    public void ToggleCategory(CategoryItem item)
+    {
+        item.IsSelected = !item.IsSelected;
+    }
 }
