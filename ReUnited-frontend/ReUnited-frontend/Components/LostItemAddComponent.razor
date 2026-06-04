@@ -114,6 +114,14 @@
     [Parameter]
     public EventCallback<LostItem> OnSave { get; set; }
 
+    private IBrowserFile? selectedFile;
+
+    private Task HandleFileSelected(IBrowserFile file)
+    {
+        selectedFile = file;
+        return Task.CompletedTask;
+    }
+
     private async Task HandleValidSubmit()
     {
         Console.WriteLine("HandleValidSubmit works");
