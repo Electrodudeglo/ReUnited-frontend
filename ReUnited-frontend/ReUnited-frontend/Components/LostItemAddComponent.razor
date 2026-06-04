@@ -112,7 +112,7 @@
     public LostItem LostItem { get; set; } = new();
 
     [Parameter]
-    public EventCallback<LostItem> OnSave { get; set; }
+    public EventCallback<(LostItem Item, IBrowserFile? File)> OnSave { get; set; }
 
     private IBrowserFile? selectedFile;
 
@@ -125,6 +125,6 @@
     private async Task HandleValidSubmit()
     {
         Console.WriteLine("HandleValidSubmit works");
-        await OnSave.InvokeAsync(LostItem);
+        await OnSave.InvokeAsync((LostItem));
     }
 }
