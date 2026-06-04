@@ -49,6 +49,8 @@
             ".png"
     };
 
+    private string? fileError;
+
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
