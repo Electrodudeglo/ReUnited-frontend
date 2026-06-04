@@ -125,7 +125,6 @@
 
     private async Task HandleValidSubmit()
     {
-        Console.WriteLine("HandleValidSubmit works");
         await OnSave.InvokeAsync((LostItem, selectedFile));
     }
 }
