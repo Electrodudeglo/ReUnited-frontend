@@ -44,11 +44,10 @@
             <div class="select is-fullwidth">
                 <InputSelect @bind-Value="LostItem.Category">
                     <option value="">Select Category</option>
-                    <option>Phone</option>
-                    <option>Bag</option>
-                    <option>Wallet</option>
-                    <option>Keys</option>
-                    <option>Jewellery</option>
+                    @foreach (var cat in Categories)
+                    {
+                        <option>@cat.Name</option>
+                    }
                 </InputSelect>
             </div>
         </div>
@@ -116,6 +115,8 @@
     public EventCallback<(LostItem Item, IBrowserFile? File)> OnSave { get; set; }
 
     private IBrowserFile? selectedFile;
+
+    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
 
     private Task HandleFileSelected(IBrowserFile file)
     {
