@@ -61,9 +61,16 @@
 
         if (!AllowedExtensions.Contains(extension))
         {
-            throw new InvalidOperationException(
-                "Only JPG, JPEG and PNG files are allowed.");
+            fileError =
+                        "Only JPG, JPEG and PNG images are allowed.";
+
+            selectedFile = null;
+            LostItem.Picture = string.Empty;
+
+            return;
         }
+
+        fileError = null;
 
         selectedFile = file;
 
