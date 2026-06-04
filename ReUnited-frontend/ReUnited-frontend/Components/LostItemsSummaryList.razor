@@ -12,8 +12,7 @@
                 <th>Postcode</th>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Info</th>
-                <th>Contact</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -44,10 +43,10 @@
                     </td>
 
                     <td>
-                        <button class="button is-danger is-small"
-                                @onclick="() => DeleteRequested(item)">
+                        <NavLink class="button is-danger is-small"
+                                 href="@($"/lostitems/delete/{item.Id}")">
                             Delete
-                        </button>
+                        </NavLink>
                     </td>
 
                 </tr>

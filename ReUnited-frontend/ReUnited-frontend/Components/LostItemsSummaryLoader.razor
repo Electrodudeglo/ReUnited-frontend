@@ -56,10 +56,11 @@ else {
 			errorMessage = $"An error occurred: {ex.Message}";
 		}
 	}
-	private void OpenDeleteModal(LostItem item)
+	private async Task OpenDeleteModal(LostItem item)
 	{
 		selectedItem = item;
 		showDeleteModal = true;
+		await InvokeAsync(StateHasChanged);
 	}
 
 	private void CloseDeleteModal()
@@ -70,16 +71,18 @@ else {
 
 	private async Task DeleteItem(LostItem item)
 	{
+        Console.WriteLine($"Attempting to delete item with ID: {item.Id}");
 		try
 		{
-			var http = new HttpClient();
-
-			await http.DeleteAsync(
+			var http = new HttpClient(); 
+			var response = await http.DeleteAsync(
 				$"http://localhost:5265/api/lostitems/{item.Id}"
 			);
 
-			_summaryLoader.Remove(item);
-
+			_summaryLoader = _summaryLoader
+			.Where(x => x.Id != item.Id)
+			.ToList();
+	                    
 			CloseDeleteModal();
 		}
 		catch (Exception ex)
