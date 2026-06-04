@@ -10,7 +10,8 @@
         <label class="label">Item Description</label>
 
         <div class="control">
-            <InputText class="input" placeholder="e.g. Black iPhone 15 with a cracked screen"
+            <InputText class="input" 
+                       placeholder="e.g. Black iPhone 15 with a cracked screen"
                        @bind-Value="LostItem.ItemDescription" />
         </div>
 
@@ -23,6 +24,7 @@
         <label class="label">City</label>
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. London"
                        @bind-Value="LostItem.City" />
         </div>
         <ValidationMessage For="@(() => LostItem.City)" />
