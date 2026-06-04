@@ -1,89 +1,47 @@
 ﻿@using ReUnited_frontend.DataModels
 
-<h3 class="title is-4">Lost Items</h3>
 
-<div class="table-container">
-    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
-
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>City</th>
-                <th>Postcode</th>
-                <th>Category</th>
-                <th>Description</th>
-                <th>Info</th>
-                <th>Contact</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var item in LostItems)
-            {
-                <tr>
-                    <th>
-                        <NavLink href="@($"/lostitems/{item.Id}")">
-                            @item.ItemDescription
-                        </NavLink>
-                    </th>
-
-
-                    <td>@item.City</td>
-
-                    <td>@item.Postcode</td>
-
-                    <td>@item.Category</td>
-
-                    <td>@item.AdditionalInformation</td>
-
-                    <td>
-                        <figure class="image is-64x64">
-                            <img src="images/reunitedlogo.png" />
-                        </figure>
-                    </td>
-
-                    <td>
-                        <div>
-                            <strong>@item.Email</strong><br />
-                            @item.PhoneNumber
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
-</div>
-
-@if (showDeleteModal)
+@if (Show)
 {
     <div class="modal is-active">
 
-        <div class="modal-background" @onclick="CloseModal"></div>
+        <div class="modal-background" @onclick="Close"></div>
 
         <div class="modal-card">
 
             <header class="modal-card-head">
                 <p class="modal-card-title">Confirm Delete</p>
-                <button class="delete" aria-label="close" @onclick="CloseModal"></button>
+
+                <button class="delete"
+                        aria-label="close"
+                        @onclick="Close">
+                </button>
             </header>
 
             <section class="modal-card-body">
-                <p>Are you sure you want to delete:</p>
 
-                <strong>@selectedItem?.ItemDescription</strong>
-                <p>@selectedItem?.City</p>
+                <p>Are you sure you want to delete this item?</p>
+
+                <br />
+
+                <strong>@Item?.ItemDescription</strong>
+
+                <p>@Item?.City</p>
+
             </section>
 
             <footer class="modal-card-foot">
-                <button class="button is-danger" @onclick="DeleteItem">
+
+                <button class="button is-danger"
+                        @onclick="ConfirmDelete">
                     Delete
                 </button>
 
-                <button class="button" @onclick="CloseModal">
+                <button class="button"
+                        @onclick="Close">
                     Cancel
                 </button>
+
             </footer>
 
         </div>
@@ -92,36 +50,29 @@
 }
 
 @code {
+
     [Parameter]
-    public List<LostItem> LostItems { get; set; } = new();
-    private HttpClient Client = new HttpClient();
-    private bool showDeleteModal = false;
-    private LostItem? selectedItem;
+    public LostItem? Item { get; set; }
 
-    private void OpenDeleteModal(LostItem item)
+    [Parameter]
+    public bool Show { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<LostItem> OnDeleteConfirmed { get; set; }
+
+    private async Task Close()
     {
-        selectedItem = item;
-        showDeleteModal = true;
+        await OnClose.InvokeAsync();
     }
 
-    private void CloseModal()
+    private async Task ConfirmDelete()
     {
-        selectedItem = null;
-        showDeleteModal = false;
-    }
-
-    private async Task DeleteItem()
-    {
-        if (selectedItem == null)
-            return;
-
-        await Client.DeleteAsync(
-            $"http://localhost:5265/api/lostitems/{selectedItem.Id}"
-        );
-
-        LostItems.Remove(selectedItem);
-
-        CloseModal();
+        if (Item != null)
+        {
+            await OnDeleteConfirmed.InvokeAsync(Item);
+        }
     }
 }
-
