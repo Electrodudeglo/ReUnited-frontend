@@ -1,3 +1,29 @@
-{
-
-}
+[
+  {
+    "Name": "Phone"
+  },
+  {
+    "Name": "Bag"
+  },
+  {
+    "Name": "Wallet"
+  },
+  {
+    "Name": "Keys"
+  },
+  {
+    "Name": "Jewellery"
+  },
+  {
+    "Name": "Clothing"
+  },
+  {
+    "Name": "Documents"
+  },
+  {
+    "Name": "Sports Equipment"
+  },
+  {
+    "Name": "Laptop"
+  }
+]
