@@ -1,7 +1,50 @@
-﻿
+﻿<div>
+    <div class="modal is-active is-clipped">
+        <div class="modal-background"></div>
 
+        <div class="modal-content">
+            <div class="box">
+
+                <div class="content has-text-centered mb-5">
+                    <p class="title is-5 has-text-danger">
+                        Are you sure you want to delete this item?
+                    </p>
+                    <p class="subtitle is-6">
+                        This action cannot be undone.
+                    </p>
+                </div>
+
+                <div class="buttons is-centered">
+                    <button class="button is-danger">
+                        Delete
+                    </button>
+
+                    <button class="button is-light" @onclick="ChangeModal">
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @code {
+    @rendermode InteractiveServer
+
+    [Parameter]
+    public bool HideModal { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> Modal { get; set; }
+
+
+    private async Task ChangeModal()
+    {
+        await Modal.InvokeAsync(HideModal);
+    }
+
+
 
 }

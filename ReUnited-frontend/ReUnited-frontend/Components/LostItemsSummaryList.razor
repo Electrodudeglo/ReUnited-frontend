@@ -1,8 +1,12 @@
-﻿@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.Components.UI
+@using ReUnited_frontend.DataModels
 
-<h3 class="title is-4">Lost Items</h3>
+@if(ShowModal == true)
+{    
+    <LostItemDeleteModal/>
+}
 
-<div class="table-container">
+<div class="container is-fluid">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
 
         <thead>
@@ -11,13 +15,15 @@
                 <th>City</th>
                 <th>Postcode</th>
                 <th>Category</th>
-                <th>Description</th>
+                <th>Additional Information</th>
                 <th>Image</th>
-                <th>Actions</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
 
         <tbody>
+
             @foreach (var item in LostItems)
             {
                 <tr>
@@ -34,7 +40,7 @@
 
                     <td>@item.Category</td>
 
-                    <td>@item.AdditionalInformation</td>
+                    <td class="truncate">@item.AdditionalInformation</td>
 
                     <td>
                         <figure class="image is-64x64">
@@ -43,24 +49,45 @@
                     </td>
 
                     <td>
-                        // add modal fireup here.
+                       
+                        <button class="button is-white">Edit</button>
+                        
+                    </td>
+
+                    <td>
+                        <button class="button is-danger" @onclick="ChangeModal">Delete</button>
                     </td>
 
                 </tr>
             }
         </tbody>
-
     </table>
 </div>
 
 
+
+
 @code {
+
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
     [Parameter]
     public EventCallback<LostItem> OnDeleteRequested { get; set; }
 
+    [Parameter]
+    public EventCallback<bool> UpdateModal { get; set; }
+
     public bool ShowModal { get; set; } = false;
+
+    public void ChangeModal()
+    {
+        ShowModal = true;
+    }
+
+    public async Task OnHandleModal()
+    {
+        await UpdateModal.InvokeAsync(ShowModal);
+    }
 
     private async Task DeleteRequested(LostItem item)
     {

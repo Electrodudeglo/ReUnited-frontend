@@ -10,13 +10,6 @@
 			LostItems="_summaryLoader"/>
 	</div>
 	
-	@if(showDeleteModal)
-	{
-		
-		<LostItemDeleteModal/>
-
-	}
-
 }
 
 else {
@@ -28,7 +21,7 @@ else {
 }
 
 @code {
-
+	@rendermode InteractiveServer
 	private List<LostItem> _summaryLoader { get; set; } = new();
 
 	private string errorMessage = "";
