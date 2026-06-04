@@ -14,6 +14,7 @@
                 <th>Description</th>
                 <th>Info</th>
                 <th>Contact</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
@@ -43,11 +44,12 @@
                     </td>
 
                     <td>
-                        <div>
-                            <strong>@item.Email</strong><br />
-                            @item.PhoneNumber
-                        </div>
+                        <button class="button is-danger is-small"
+                                @onclick="() => DeleteRequested(item)">
+                            Delete
+                        </button>
                     </td>
+
                 </tr>
             }
         </tbody>
@@ -59,4 +61,11 @@
 @code {
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
+    [Parameter]
+    public EventCallback<LostItem> OnDeleteRequested { get; set; }
+
+    private async Task DeleteRequested(LostItem item)
+    {
+        await OnDeleteRequested.InvokeAsync(item);
+    }
 }
