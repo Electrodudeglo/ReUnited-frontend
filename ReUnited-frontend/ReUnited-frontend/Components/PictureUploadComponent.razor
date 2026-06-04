@@ -41,9 +41,28 @@
 
     private IBrowserFile? selectedFile;
 
+    private readonly string[] AllowedExtensions =
+    {
+            ".jpg",
+            ".jpeg",
+            ".png"
+    };
+
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        selectedFile = e.File;
+        var file = e.File;
+
+        var extension =
+            Path.GetExtension(file.Name)
+                .ToLowerInvariant();
+
+        if (!AllowedExtensions.Contains(extension))
+        {
+            throw new InvalidOperationException(
+                "Only JPG, JPEG and PNG files are allowed.");
+        }
+
+        selectedFile = file;
 
         LostItem.Picture = selectedFile.Name;
 
