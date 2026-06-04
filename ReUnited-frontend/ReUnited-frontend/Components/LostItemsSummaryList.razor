@@ -1,11 +1,13 @@
 ﻿@using ReUnited_frontend.DataModels
 
+@rendermode InteractiveServer
+
 <h3 class="title is-4">Lost Items</h3>
 
 <div class="buttons">
     @foreach (var cat in Categories)
     {
-        <button @onclick="()=>ToggleCategory(cat)">
+        <button type=button class="button @(cat.IsSelected ? "is-primary is-outlined" : "is-dark is-outlined")" @onclick="() => ToggleCategory(cat)">
             @cat.Name
         </button>
     }
@@ -29,6 +31,10 @@
         <tbody>
             @foreach (var item in LostItems)
             {
+                if (CheckIfFilter() && !IsFilterContains(item))
+                {
+                    continue;
+                }
                 <tr>
                     <th>
                         <NavLink href="@($"/lostitems/{item.Id}")">
@@ -69,24 +75,37 @@
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
 
-    public class CategoryItem
-    {
-        public string Name { get; set; } = "";
-        public bool IsSelected { get; set; } = false;
-    }
-
-    public List<CategoryItem> Categories { get; set; } = new()
-    {
-        new() { Name = "Phone" },
-        new() { Name = "Bag" },
-        new() { Name = "Wallet" },
-        new() { Name = "Keys" },
-        new() { Name = "Jewellery" }
-    };
+    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
 
 
     public void ToggleCategory(CategoryItem item)
     {
         item.IsSelected = !item.IsSelected;
+    }
+
+    public bool CheckIfFilter()
+    {
+        foreach (var item in Categories)
+        {
+            if (item.IsSelected == true)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsFilterContains(LostItem item)
+    {
+        foreach (var category in Categories)
+        {
+            if (category.IsSelected && category.Name == item.Category)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

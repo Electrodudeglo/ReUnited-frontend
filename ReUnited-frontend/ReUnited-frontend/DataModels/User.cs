@@ -1,4 +1,4 @@
-﻿namespace ReUnitedfrontend.DataModels
+﻿namespace ReUnited_frontend.DataModels
 {
     public class LoginPayload
     {
@@ -7,8 +7,10 @@
     }
 
     public static class User
-{
+    {
         public static string Token { get; set; } = "";
         public static bool Authenticated { get; set; } = false;
-}
+    }
+
+
 }
