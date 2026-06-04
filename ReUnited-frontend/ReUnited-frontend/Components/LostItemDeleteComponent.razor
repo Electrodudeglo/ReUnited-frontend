@@ -94,7 +94,7 @@
 @code {
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
-
+    private HttpClient Client = new HttpClient();
     private bool showDeleteModal = false;
     private LostItem? selectedItem;
 
@@ -115,7 +115,7 @@
         if (selectedItem == null)
             return;
 
-        await Http.DeleteAsync(
+        await Client.DeleteAsync(
             $"http://localhost:5265/api/lostitems/{selectedItem.Id}"
         );
 
