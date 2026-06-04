@@ -18,11 +18,15 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item">
+            <NavLink class="navbar-item" href="@("/")">
                 Home
-            </a>
+            </NavLink>
 
-            <NavLink class="navbar-item" href="@($"/lostitems/add")">
+            <NavLink class="navbar-item" href="@("/lostitems")">
+                Lost Items
+            </NavLink>
+
+            <NavLink class="navbar-item" href="@("/lostitems/add")">
                 Add Lost Item
             </NavLink>
 
