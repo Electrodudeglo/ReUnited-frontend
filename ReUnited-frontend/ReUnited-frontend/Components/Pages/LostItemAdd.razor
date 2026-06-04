@@ -99,9 +99,14 @@ else
                     "http://localhost:5265/api/lostitems", 
                     content);
 
-            if (response != null)
+            if (!response.IsSuccessStatusCode)
             {
-                response.EnsureSuccessStatusCode();
+                var error =
+                    await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine(error);
+
+                throw new Exception(error);
             }
 
             isLoading = false;
