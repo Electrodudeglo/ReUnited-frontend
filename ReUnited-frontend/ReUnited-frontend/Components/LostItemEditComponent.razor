@@ -62,9 +62,9 @@ else
     </div>
 
     <div class="field">
-        <label class="label">Email</label>
+        <label class="label" for="email">Email</label>
         <div class="control">
-            <InputText class="input" @bind-Value="EditLostItem.Email" />
+            <InputText class="input" id="email" @bind-Value="EditLostItem.Email" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -76,9 +76,9 @@ else
     </div>
 
     <div class="field">
-        <label class="label">Phone Number</label>
+        <label class="label" for="phone">Phone Number</label>
         <div class="control">
-            <InputText class="input" @bind-Value="EditLostItem.PhoneNumber" />
+            <InputText class="input" id="phone" @bind-Value="EditLostItem.PhoneNumber" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -99,9 +99,10 @@ else
                 <span class="file-label"> Choose a file… </span>
             </span>
             <span class="file-name"> Screen Shot 2017-07-29 at 15.54.25.png</span>
-            <InputText @bind-Value="PlaceHolderImage" />
+            
         </label>
     </div>
+    <InputText @bind-Value="PlaceHolderImage" />
     
     <div class="field is-grouped mb-5">
         <div class="control">
