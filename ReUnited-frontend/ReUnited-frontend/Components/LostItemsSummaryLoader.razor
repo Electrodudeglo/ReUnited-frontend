@@ -3,10 +3,20 @@
 
 
 @if (_summaryLoader != null)
-{	
+{
 	<div>
-		<LostItemsSummaryList LostItems="_summaryLoader"/>
+		<LostItemsSummaryList 
+			LostItems="_summaryLoader"
+			OnDeleteRequested="OpenDeleteModal" />
 	</div>
+	<LostItemDeleteComponent 
+		Item="selectedItem"
+							 
+		Show="showDeleteModal"
+							 
+		OnClose="CloseDeleteModal"
+							 
+		OnDeleteConfirmed="DeleteItem" />
 }
 
 else {
@@ -22,6 +32,10 @@ else {
 	private List<LostItem> _summaryLoader { get; set; } = new();
 
 	private string errorMessage = "";
+
+	private bool showDeleteModal = false;
+
+	private LostItem? selectedItem;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -42,5 +56,37 @@ else {
 			errorMessage = $"An error occurred: {ex.Message}";
 		}
 	}
+	private void OpenDeleteModal(LostItem item)
+	{
+		selectedItem = item;
+		showDeleteModal = true;
+	}
 
+	private void CloseDeleteModal()
+	{
+		selectedItem = null;
+		showDeleteModal = false;
+	}
+
+	private async Task DeleteItem(LostItem item)
+	{
+		try
+		{
+			var http = new HttpClient();
+
+			await http.DeleteAsync(
+				$"http://localhost:5265/api/lostitems/{item.Id}"
+			);
+
+			_summaryLoader.Remove(item);
+
+			CloseDeleteModal();
+		}
+		catch (Exception ex)
+		{
+			errorMessage = $"Delete failed: {ex.Message}";
+		}
+	}
 }
+
+
