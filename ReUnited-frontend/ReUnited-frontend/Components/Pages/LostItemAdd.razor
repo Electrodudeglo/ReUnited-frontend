@@ -35,7 +35,7 @@ else
     private string? errorMessage = String.Empty;
 
 
-    private async Task SaveLostItem(LostItem lostItem)
+    private async Task SaveLostItem((LostItem Item, IBrowserFile? File) data)
     {
         try
         {
