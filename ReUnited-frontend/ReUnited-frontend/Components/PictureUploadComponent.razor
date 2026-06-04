@@ -9,6 +9,7 @@
     <div class="file has-name is-boxed">
         <label class="file-label">
             <InputFile class="file-input"
+                       accept=".jpg,.jpeg,.png"
                        OnChange="HandleFileSelected" />
 
             <span class="file-cta">
@@ -31,6 +32,13 @@
     </div>
 
     <ValidationMessage For="@(() => LostItem.Picture)" />
+
+    @if (!string.IsNullOrWhiteSpace(fileError))
+    {
+        <p class="help is-danger">
+            @fileError
+        </p>
+    }
 </div>
 @code {
     [Parameter]
@@ -41,9 +49,37 @@
 
     private IBrowserFile? selectedFile;
 
+    private readonly string[] AllowedExtensions =
+    {
+            ".jpg",
+            ".jpeg",
+            ".png"
+    };
+
+    private string? fileError;
+
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        selectedFile = e.File;
+        var file = e.File;
+
+        var extension =
+            Path.GetExtension(file.Name)
+                .ToLowerInvariant();
+
+        if (!AllowedExtensions.Contains(extension))
+        {
+            fileError =
+                        "Only JPG, JPEG and PNG images are allowed.";
+
+            selectedFile = null;
+            LostItem.Picture = string.Empty;
+
+            return;
+        }
+
+        fileError = null;
+
+        selectedFile = file;
 
         LostItem.Picture = selectedFile.Name;
 
