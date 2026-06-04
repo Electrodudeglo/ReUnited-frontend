@@ -1,5 +1,10 @@
 ﻿@using ReUnitedfrontend.DataModels;
 
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+@rendermode InteractiveServer
+
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -58,9 +63,9 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary">
+                        @* <a class="button is-primary">
                             <strong>Sign up</strong>
-                        </a>
+                        </a> *@
                         <a class="button" href="@($"/login")">
                             Log in
                         </a>
@@ -70,7 +75,16 @@
         }
         else
         {
-            <p>Logged in &nbsp &nbsp</p>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" @onclick="LogOut">
+                            <strong>Log out</strong>
+                        </a>
+                        <p>Logged in &nbsp &nbsp</p>
+                    </div>
+                </div>
+            </div>
         }
     </div>
 
@@ -78,5 +92,12 @@
 </nav>
 
 @code {
+    private void LogOut()
+    {
+        User.Token = "";
+        User.Authenticated = false;
+        Http.DefaultRequestHeaders.Authorization = null;
 
+        Nav.NavigateTo("/", forceLoad: true);
+    }
 }
