@@ -29,7 +29,7 @@ else
     public int Id { get; set; }
 
     public LostItem LostItem { get; set; } = new();
-    public LostItem SuccessItem { get; set; } = new();
+    public bool SuccessItem { get; set; }
 
     public bool isLoading = true;
     public string? errorMessage;
@@ -76,7 +76,7 @@ else
 
             if (response.IsSuccessStatusCode)
             {
-                SuccessItem = updatedItem;
+                SuccessItem = true;
                 Console.WriteLine("Update successful");
             }
             else
