@@ -6,48 +6,104 @@
 <EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
 
-    <div>
-        <label>Item:</label>
-        <InputText @bind-Value="LostItem.ItemDescription" />
-        <ValidationMessage For="@(() => LostItem.ItemDescription)" />
-    </div>
-    <div>
-        <label>City:</label>
-        <InputText @bind-Value="LostItem.City" />
-        <ValidationMessage For="@(() => LostItem.City)" />
-    </div>
-    <div>
-        <label>Postcode:</label>
-        <InputText @bind-Value="LostItem.Postcode" />
-        <ValidationMessage For="@(() => LostItem.Postcode)" />
-    </div>
-    <div>
-        <label>Category:</label>
-        <InputText @bind-Value="LostItem.Category" />
-        <ValidationMessage For="@(() => LostItem.Category)" />
-    </div>
-    <div>
-        <label>Description:</label>
-        <InputText @bind-Value="LostItem.AdditionalInformation" />
-        <ValidationMessage For="@(() => LostItem.AdditionalInformation)" />
-    </div>
-    <div>
-        <label>Email:</label>
-        <InputText @bind-Value="LostItem.Email" />
-        <ValidationMessage For="@(() => LostItem.Email)" />
-    </div>
-    <div>
-        <label>Phone Number:</label>
-        <InputText @bind-Value="LostItem.PhoneNumber" />
-        <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
-    </div>
-    <div>
-        <label>Picture:</label>
-        <InputText @bind-Value="LostItem.Picture" />
-        <ValidationMessage For="@(() => LostItem.Picture)" />
+    <div class="field">
+        <label class="label">Item Description</label>
+
+        <div class="control">
+            <InputText class="input"
+                       @bind-Value="LostItem.ItemDescription" />
+        </div>
+
+        <p class="help is-danger">
+            <ValidationMessage For="@(() => LostItem.ItemDescription)" />
+        </p>
     </div>
 
-    <button type="submit">Submit</button>
+    <div class="field">
+        <label class="label">City</label>
+        <div class="control">
+            <InputText class="input"
+                       @bind-Value="LostItem.City" />
+        </div>
+        <ValidationMessage For="@(() => LostItem.City)" />
+    </div>
+
+    <div class="field">
+        <label class="label">Postcode</label>
+        <div class="control">
+            <InputText class="input"
+                       @bind-Value="LostItem.Postcode" />
+        </div>
+        <ValidationMessage For="@(() => LostItem.Postcode)" />
+    </div>
+
+    <div class="field">
+        <label class="label">Category</label>
+
+        <div class="control">
+            <div class="select is-fullwidth">
+                <InputSelect @bind-Value="LostItem.Category">
+                    <option value="">Select Category</option>
+                    <option>Phone</option>
+                    <option>Wallet</option>
+                    <option>Keys</option>
+                    <option>Jewellery</option>
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Additional Information</label>
+        <div class="control">
+            <InputTextArea class="textarea"
+                           @bind-Value="LostItem.AdditionalInformation" />
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Email</label>
+
+        <div class="control has-icons-left">
+            <InputText class="input"
+                       @bind-Value="LostItem.Email" />
+
+            <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+            </span>
+        </div>
+
+        <ValidationMessage For="@(() => LostItem.Email)" />
+    </div>
+    
+    <div class="field">
+        <label class="label">Phone Number</label>
+
+        <div class="control">
+            <InputText class="input"
+                       @bind-Value="LostItem.PhoneNumber" />
+        </div>
+
+        <p class="help is-danger">
+            <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
+        </p>
+    </div>
+
+    <PictureUploadComponent />
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button type="submit" class="button is-primary">
+                Submit
+            </button>
+        </div>
+
+        <div class="control">
+            <button type="button" class="button is-light">
+                Cancel
+            </button>
+        </div>
+    </div>
 </EditForm>
 
 
