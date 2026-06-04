@@ -25,36 +25,22 @@
         </p>
     }
     <br />
-
 </div>
-
-@* <p>
-    @error
-</p>
-
-<p>
-    user token: @User.Token
-    <br />
-    token: @token
-</p> *@
 
 <div>
-    @if (!string.IsNullOrWhiteSpace(error))
-    {
-        <p style="color:red">@error</p>
-    } 
+    <p>@LoginStatus</p>
 </div>
+
 
 @code {
     public string token { get; set; } = "";
-    private string error = "";
+    public string LoginStatus { get; set; } = "";
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
 
     private async Task LoginAsync()
     {
-        error = "";
 
         LoginPayload loginPayload = new();
         loginPayload.Username = Username;
@@ -64,7 +50,7 @@
 
         if (!response.IsSuccessStatusCode)
         {
-            error = await response.Content.ReadAsStringAsync();
+            LoginStatus = "Login error";
             return;
         }
 
@@ -73,7 +59,7 @@
 
         if (string.IsNullOrWhiteSpace(token))
         {
-            error = "Login succeeded but token was empty.";
+            LoginStatus = "Login succeeded but token was empty.";
             return;
         }
 
@@ -82,10 +68,5 @@
         User.Token = token;
         User.Authenticated = true;
 
-    }
-
-    public sealed class LoginResult
-    {
-        public string? AccessToken { get; set; }
     }
 }
