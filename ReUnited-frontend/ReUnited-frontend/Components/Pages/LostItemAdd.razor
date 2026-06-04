@@ -1,4 +1,5 @@
 ﻿@page "/lostitems/add"
+@inject IWebHostEnvironment Environment
 @rendermode InteractiveServer
 @using ReUnited_frontend.DataModels
 
@@ -34,11 +35,36 @@ else
     private string? errorMessage = String.Empty;
 
 
-    private async Task SaveLostItem(LostItem lostItem)
+    private async Task SaveLostItem((LostItem Item, IBrowserFile? File) data)
     {
         try
         {
-            var response = await Client.PostAsJsonAsync<LostItem>($"http://localhost:5265/api/lostitems", lostItem);
+            var lostItem = data.Item;
+
+            if (data.File is not null)
+            {
+                var uploadsFolder =
+                    Path.Combine(Environment.WebRootPath, "uploads");
+
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName =
+                    $"{Guid.NewGuid()}{Path.GetExtension(data.File.Name)}";
+
+                var filePath =
+                    Path.Combine(uploadsFolder, fileName);
+
+                await using var stream =
+                    new FileStream(filePath, FileMode.Create);
+
+                await data.File
+                    .OpenReadStream(10 * 1024 * 1024)
+                    .CopyToAsync(stream);
+
+                lostItem.Picture = fileName;
+            }
+            
+            var response = await Client.PostAsJsonAsync<LostItem>("http://localhost:5265/api/lostitems", lostItem);
 
             if (response != null)
             {

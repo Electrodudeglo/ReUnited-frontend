@@ -45,6 +45,7 @@
                 <InputSelect @bind-Value="LostItem.Category">
                     <option value="">Select Category</option>
                     <option>Phone</option>
+                    <option>Bag</option>
                     <option>Wallet</option>
                     <option>Keys</option>
                     <option>Jewellery</option>
@@ -89,7 +90,7 @@
         </p>
     </div>
 
-    <PictureUploadComponent />
+    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected"/>
 
     <div class="field is-grouped">
         <div class="control">
@@ -112,11 +113,19 @@
     public LostItem LostItem { get; set; } = new();
 
     [Parameter]
-    public EventCallback<LostItem> OnSave { get; set; }
+    public EventCallback<(LostItem Item, IBrowserFile? File)> OnSave { get; set; }
+
+    private IBrowserFile? selectedFile;
+
+    private Task HandleFileSelected(IBrowserFile file)
+    {
+        selectedFile = file;
+        return Task.CompletedTask;
+    }
 
     private async Task HandleValidSubmit()
     {
         Console.WriteLine("HandleValidSubmit works");
-        await OnSave.InvokeAsync(LostItem);
+        await OnSave.InvokeAsync((LostItem, selectedFile));
     }
 }
