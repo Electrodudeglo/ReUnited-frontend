@@ -36,13 +36,17 @@
     [Parameter]
     public LostItem LostItem { get; set; } = new();
 
+    [Parameter]
+    public EventCallback<IBrowserFile> OnFileSelected { get; set; }
+
     private IBrowserFile? selectedFile;
 
-    private void HandleFileSelected(InputFileChangeEventArgs e)
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         selectedFile = e.File;
 
-        // Store filename in the model
         LostItem.Picture = selectedFile.Name;
+
+        await OnFileSelected.InvokeAsync(selectedFile);
     }
 }
