@@ -1,0 +1,91 @@
+﻿@using System.Net.Http.Headers;
+@using ReUnitedfrontend.DataModels;
+
+
+@page "/login"
+@rendermode InteractiveServer
+@inject HttpClient Http
+
+
+<input @bind="Username" placeholder="Username" />
+<input @bind="Password" type="password" placeholder="Password" />
+<button @onclick="LoginAsync">Login</button>
+
+<div>
+    @if (User.Authenticated)
+    {
+        <p>
+            user is authenticated
+        </p>
+    }
+    else
+    {
+        <p>
+            user is not authenticated
+        </p>
+    }
+    <br />
+
+</div>
+
+<p>
+    @error
+</p>
+
+<p>
+    user token: @User.Token
+    <br />
+    token: @token
+</p>
+
+<div>
+    @if (!string.IsNullOrWhiteSpace(error))
+    {
+        <p style="color:red">@error</p>
+    } 
+</div>
+
+@code {
+    public string token { get; set; } = "";
+    private string error = "";
+
+    public string Username { get; set; } = "";
+    public string Password { get; set; } = "";
+
+    private async Task LoginAsync()
+    {
+        error = "";
+
+        LoginPayload loginPayload = new();
+        loginPayload.Username = Username;
+        loginPayload.Password = Password;
+
+        var response = await Http.PostAsJsonAsync("api/auth/login", loginPayload);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            error = await response.Content.ReadAsStringAsync();
+            return;
+        }
+
+        token = await response.Content.ReadAsStringAsync();
+        token = token.Trim('"');
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            error = "Login succeeded but token was empty.";
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        User.Token = token;
+        User.Authenticated = true;
+
+    }
+
+    public sealed class LoginResult
+    {
+        public string? AccessToken { get; set; }
+    }
+}
