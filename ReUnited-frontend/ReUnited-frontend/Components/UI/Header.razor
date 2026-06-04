@@ -1,4 +1,6 @@
-﻿<nav class="navbar" role="navigation" aria-label="main navigation">
+﻿@using ReUnitedfrontend.DataModels;
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="/">
             <img src="images/reUniteLogoV2.png" height="100" width="100" />
@@ -50,18 +52,25 @@
         </div>
     </div>
 
-    <div class="navbar-end">
-        <div class="navbar-item">
-            <div class="buttons">
-                <a class="button is-primary">
-                    <strong>Sign up</strong>
-                </a>
-                <a class="button" href="@($"/login")">
-                    Log in
-                </a>
+    <div>
+        @if (!User.Authenticated)
+        {
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button" href="@($"/login")">
+                            Log in
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
+
+
 </nav>
 
 @code {
