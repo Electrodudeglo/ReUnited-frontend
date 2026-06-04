@@ -19,16 +19,17 @@
                         Delete
                     </button>
 
-                    <button class="button is-light" @onclick="ChangeModal">
-                        Cancel
-                    </button>
+                    
+                        
+                    <button class="button is-light" @onclick="ChangeModal">Cancel</button>
+                        
+                    
                 </div>
 
             </div>
         </div>
     </div>
 </div>
-
 
 @code {
     @rendermode InteractiveServer
@@ -39,12 +40,9 @@
     [Parameter]
     public EventCallback<bool> Modal { get; set; }
 
-
     private async Task ChangeModal()
     {
-        await Modal.InvokeAsync(HideModal);
+        await Modal.InvokeAsync(false);
     }
-
-
 
 }

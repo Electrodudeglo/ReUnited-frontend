@@ -1,14 +1,14 @@
 ﻿@using ReUnited_frontend.Components.UI
 @using ReUnited_frontend.DataModels
 
-@if(ShowModal == true)
-{    
-    <LostItemDeleteModal/>
+@if (ShowModal)
+{
+    <LostItemDeleteModal HideModal="HideModal"
+                         Modal="OnHandleModal" />
 }
 
 <div class="container is-fluid">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
-
         <thead>
             <tr>
                 <th>Item</th>
@@ -21,7 +21,6 @@
                 <th>Delete</th>
             </tr>
         </thead>
-
         <tbody>
 
             @foreach (var item in LostItems)
@@ -32,26 +31,17 @@
                             @item.ItemDescription
                         </NavLink>
                     </th>
-
-
                     <td>@item.City</td>
-
                     <td>@item.Postcode</td>
-
                     <td>@item.Category</td>
-
                     <td class="truncate">@item.AdditionalInformation</td>
-
                     <td>
                         <figure class="image is-64x64">
                             <img src="@($"uploads/{item.Picture}")" />
                         </figure>
                     </td>
-
-                    <td>
-                       
-                        <button class="button is-white">Edit</button>
-                        
+                    <td>                       
+                        <button class="button is-white">Edit</button>                        
                     </td>
 
                     <td>
@@ -79,14 +69,17 @@
 
     public bool ShowModal { get; set; } = false;
 
+    public bool HideModal { get; set; }
+
     public void ChangeModal()
     {
         ShowModal = true;
     }
 
-    public async Task OnHandleModal()
+    public async Task OnHandleModal(bool value)
     {
-        await UpdateModal.InvokeAsync(ShowModal);
+        ShowModal = value; // false → hide modal
+        StateHasChanged();
     }
 
     private async Task DeleteRequested(LostItem item)
