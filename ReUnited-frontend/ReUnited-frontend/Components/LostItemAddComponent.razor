@@ -11,6 +11,7 @@
 
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. Black iPhone 15 with a cracked screen"
                        @bind-Value="LostItem.ItemDescription" />
         </div>
 
@@ -23,6 +24,7 @@
         <label class="label">City</label>
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. London"
                        @bind-Value="LostItem.City" />
         </div>
         <ValidationMessage For="@(() => LostItem.City)" />
@@ -32,6 +34,7 @@
         <label class="label">Postcode</label>
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. SW1A 1AA"
                        @bind-Value="LostItem.Postcode" />
         </div>
         <ValidationMessage For="@(() => LostItem.Postcode)" />
@@ -57,6 +60,7 @@
         <label class="label">Additional Information</label>
         <div class="control">
             <InputTextArea class="textarea"
+                           placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
                            @bind-Value="LostItem.AdditionalInformation" />
         </div>
     </div>
@@ -66,6 +70,7 @@
 
         <div class="control has-icons-left">
             <InputText class="input"
+                       placeholder="e.g. name@example.com"
                        @bind-Value="LostItem.Email" />
 
             <span class="icon is-small is-left">
@@ -75,12 +80,13 @@
 
         <ValidationMessage For="@(() => LostItem.Email)" />
     </div>
-    
+
     <div class="field">
         <label class="label">Phone Number</label>
 
         <div class="control">
             <InputText class="input"
+                       placeholder="e.g. 07123456789"
                        @bind-Value="LostItem.PhoneNumber" />
         </div>
 
@@ -89,7 +95,7 @@
         </p>
     </div>
 
-    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected"/>
+    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected" />
 
     <div class="field is-grouped">
         <div class="control">
@@ -99,9 +105,11 @@
         </div>
 
         <div class="control">
-            <button type="button" class="button is-light">
-                Cancel
-            </button>
+            <NavLink href="@("/")">
+                <button type="button" class="button is-light">
+                    Cancel
+                </button>
+            </NavLink>
         </div>
     </div>
 </EditForm>
@@ -126,7 +134,6 @@
 
     private async Task HandleValidSubmit()
     {
-        Console.WriteLine("HandleValidSubmit works");
         await OnSave.InvokeAsync((LostItem, selectedFile));
     }
 }

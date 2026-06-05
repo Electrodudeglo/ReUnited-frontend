@@ -1,4 +1,5 @@
-﻿@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.Components.UI
+@using ReUnited_frontend.DataModels
 
 @rendermode InteractiveServer
 
@@ -34,21 +35,28 @@
 <br />
 
 <div class="table-container">
-    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
+@if (ShowModal)
+{
+    <LostItemDeleteModal HideModal="HideModal"
+                         Modal="OnHandleModal" />
+}
 
+<div class="container is-fluid">
+    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
         <thead>
             <tr>
                 <th>Item</th>
                 <th>City</th>
                 <th>Postcode</th>
                 <th>Category</th>
-                <th>Description</th>
-                <th>Info</th>
-                <th>Contact</th>
+                <th>Additional Information</th>
+                <th>Image</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
-
         <tbody>
+
             @foreach (var item in LostItems)
             {
                 if (CheckIfFilter() && !IsFilterContains(item))
@@ -61,37 +69,34 @@
                             @item.ItemDescription
                         </NavLink>
                     </th>
-
-
                     <td>@item.City</td>
-
                     <td>@item.Postcode</td>
-
                     <td>@item.Category</td>
-
-                    <td>@item.AdditionalInformation</td>
-
+                    <td class="truncate">@item.AdditionalInformation</td>
                     <td>
                         <figure class="image is-64x64">
                             <img src="@($"uploads/{item.Picture}")" />
                         </figure>
                     </td>
+                    <td>                       
+                        <button class="button is-white">Edit</button>                        
+                    </td>
 
                     <td>
-                        <div>
-                            <strong>@item.Email</strong><br />
-                            @item.PhoneNumber
-                        </div>
+                        <button class="button is-danger" @onclick="ChangeModal">Delete</button>
                     </td>
+
                 </tr>
             }
         </tbody>
-
     </table>
 </div>
 
 
+
+
 @code {
+
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
 
@@ -134,5 +139,31 @@
         }
 
         return false;
+    }
+}
+    [Parameter]
+    public EventCallback<LostItem> OnDeleteRequested { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> UpdateModal { get; set; }
+
+    public bool ShowModal { get; set; } = false;
+
+    public bool HideModal { get; set; }
+
+    public void ChangeModal()
+    {
+        ShowModal = true;
+    }
+
+    public async Task OnHandleModal(bool value)
+    {
+        ShowModal = value; // false → hide modal
+        StateHasChanged();
+    }
+
+    private async Task DeleteRequested(LostItem item)
+    {
+        await OnDeleteRequested.InvokeAsync(item);
     }
 }
