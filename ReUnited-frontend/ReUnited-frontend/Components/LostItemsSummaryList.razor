@@ -51,8 +51,11 @@
                 <th>Category</th>
                 <th>Additional Information</th>
                 <th>Image</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                @if (User.Authenticated)
+                {
+                    <th>Edit</th>
+                    <th>Delete</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -78,13 +81,16 @@
                             <img src="@($"uploads/{item.Picture}")" />
                         </figure>
                     </td>
-                    <td>                       
-                        <button class="button is-white">Edit</button>                        
-                    </td>
+                    @if (User.Authenticated)
+                    {
+                        <td>
+                            <button class="button is-white">Edit</button>
+                        </td>
 
-                    <td>
-                        <button class="button is-danger" @onclick="ChangeModal">Delete</button>
-                    </td>
+                        <td>
+                            <button class="button is-danger" @onclick="ChangeModal">Delete</button>
+                        </td>
+                    }
 
                 </tr>
             }
