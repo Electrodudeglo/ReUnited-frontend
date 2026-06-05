@@ -33,9 +33,12 @@
                 Lost Items
             </NavLink>
 
-            <NavLink class="navbar-item" href="@("/useritems")">
+            @if (User.Authenticated)
+            {
+                <NavLink class="navbar-item" href="@("/useritems")">
                 Your Submitted Items
-            </NavLink>
+                </NavLink>
+            }
 
             <NavLink class="navbar-item" href="@("/lostitems/add")">
                 Add Lost Item
