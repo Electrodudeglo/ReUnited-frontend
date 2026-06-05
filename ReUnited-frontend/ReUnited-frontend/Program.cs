@@ -2,12 +2,18 @@ using ReUnited_frontend.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped(_ => new HttpClient
+{
+    BaseAddress = new Uri("http://localhost:5265/")
+});
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

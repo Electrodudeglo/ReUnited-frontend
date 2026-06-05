@@ -1,0 +1,80 @@
+﻿@using System.Net.Http.Headers;
+@using ReUnited_frontend.DataModels
+
+
+@page "/login"
+@rendermode InteractiveServer
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="columns is-centered">
+    <div class="column is-one-third">
+        <label class="label">Email</label>
+
+        <div class="control">
+            <InputText class="input" @bind-Value="Username" placeholder="Username" />
+        </div>
+
+        <div class="field">
+            <label class="label">Password</label>
+
+            <div class="control">
+                <InputText class="input" type="password" @bind-Value="Password" placeholder="Password" />
+            </div>
+        </div>
+
+
+        <div class="buttons is-centered">
+            <div class="navbar-item">
+                <a class="button" @onclick="LoginAsync"> Log in</a>
+            </div>
+        </div>
+    </div>   
+</div>
+
+
+
+<div>
+    <p>&nbsp &nbsp @LoginStatus</p>
+</div>
+
+
+@code {
+    public string token { get; set; } = "";
+    public string LoginStatus { get; set; } = "";
+
+    public string Username { get; set; } = "";
+    public string Password { get; set; } = "";
+
+    private async Task LoginAsync()
+    {
+
+        LoginPayload loginPayload = new();
+        loginPayload.Username = Username;
+        loginPayload.Password = Password;
+
+        var response = await Http.PostAsJsonAsync("api/auth/login", loginPayload);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            LoginStatus = "Login error";
+            return;
+        }
+
+        token = await response.Content.ReadAsStringAsync();
+        token = token.Trim('"');
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            LoginStatus = "Login succeeded but token was empty.";
+            return;
+        }
+
+        Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        User.Token = token;
+        User.Authenticated = true;
+
+        Nav.NavigateTo("/", forceLoad: true);
+    }
+}
