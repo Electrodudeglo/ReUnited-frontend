@@ -1,4 +1,4 @@
-﻿@page "/lostitems/edit/{Id:int}"
+﻿@page "/founditems/edit/{Id:int}"
 @using ReUnited_frontend.DataModels
 @rendermode InteractiveServer
 
@@ -18,7 +18,7 @@ else
     <div class="fixed-grid has-3-cols">
         <div class="grid">
             <div class="cell is-col-start-2">
-                <LostItemEditComponent EditLostItem="LostItem" OnSave="HandleSave" SuccessMessage="SuccessItem" />
+                <FoundItemEditComponent EditFoundItem="FoundItem" OnSave="HandleSave" SuccessMessage="SuccessItem" />
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@ else
 	[Parameter]
 	public int Id { get; set; }
 
-	public LostItem LostItem { get; set; } = new();
+	public FoundItem FoundItem { get; set; } = new();
 	public bool SuccessItem { get; set; }
 
 	public bool isLoading = true;
@@ -41,16 +41,16 @@ else
 		try
 		{
 			// Load the item from the API
-			LostItem? response = await Client.GetFromJsonAsync<LostItem>(
-				$"http://localhost:5265/api/lostitems/{Id}");
+			FoundItem? response = await Client.GetFromJsonAsync<FoundItem>(
+				$"http://localhost:5265/api/founditems/{Id}");
 
 			if (response == null)
 			{
-				errorMessage = "Could not load lost item.";
+				errorMessage = "Could not load found item.";
 			}
 			else
 			{
-				LostItem = response;
+				FoundItem = response;
 			}
 		}
 		catch (Exception ex)
@@ -61,13 +61,13 @@ else
 		isLoading = false;
 	}
 
-	private async Task HandleSave(LostItem updatedItem)
+	private async Task HandleSave(FoundItem updatedItem)
 	{
 			
         try
         {
-            var response = await Client.PutAsJsonAsync<LostItem>(
-                $"http://localhost:5265/api/lostitems/{Id}",
+            var response = await Client.PutAsJsonAsync<FoundItem>(
+                $"http://localhost:5265/api/founditems/{Id}",
                 updatedItem);
 
             if (response.IsSuccessStatusCode)

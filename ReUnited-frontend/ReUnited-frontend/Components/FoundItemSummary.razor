@@ -1,20 +1,20 @@
 ﻿@using ReUnited_frontend.DataModels
 
-<div class="lost-item-page">
+<div class="found-item-page">
 
-    <div class="lost-item-card">
+    <div class="found-item-card">
 
-		<img src="@LostItem.Picture"
-             alt="Lost item image"
-             class="lost-item-image" />
+		<img src="@FoundItem.Picture"
+             alt="Found item image"
+             class="found-item-image" />
 
         <h3 class="title is-5 has-text-centered" style="color: #eee;">
-            @LostItem.ItemDescription
+            @FoundItem.ItemDescription
         </h3>
 
         <div class="found-box">
             <p class="has-text-weight-semibold">Found at</p>
-            <p>@LostItem.City @LostItem.Postcode</p>
+            <p>@FoundItem.City @FoundItem.Postcode</p>
         </div>
 
         
@@ -33,15 +33,15 @@
        
 
         <div class="details-grid">
-            <p><strong>Email:</strong> @LostItem.Email</p>
-            <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
-            <p><strong>Category:</strong> @LostItem.Category</p>
-            <p class="mb-5"><strong>Notes:</strong> @LostItem.AdditionalInformation</p>
+            <p><strong>Email:</strong> @FoundItem.Email</p>
+            <p><strong>Phone:</strong> @FoundItem.PhoneNumber</p>
+            <p><strong>Category:</strong> @FoundItem.Category</p>
+            <p class="mb-5"><strong>Notes:</strong> @FoundItem.AdditionalInformation</p>
         </div>
 
         <footer class="card-footer">
             <NavLink class="card-footer-item button mr-5"
-                     href="@($"/lostitems/edit/{LostItem.Id}")">
+                     href="@($"/founditems/edit/{FoundItem.Id}")">
                 Edit
             </NavLink>
 
@@ -58,5 +58,5 @@
 
 @code {
     [Parameter]
-    public LostItem LostItem { get; set; }
+    public FoundItem FoundItem { get; set; }
 }

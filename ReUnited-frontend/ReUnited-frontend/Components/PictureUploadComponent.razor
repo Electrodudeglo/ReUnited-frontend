@@ -22,14 +22,14 @@
             </span>
 
             <span class="file-name">
-                @(string.IsNullOrWhiteSpace(LostItem.Picture)
+                @(string.IsNullOrWhiteSpace(FoundItem.Picture)
                                 ? "No file selected"
-                                : LostItem.Picture)
+                                : FoundItem.Picture)
             </span>
         </label>
     </div>
 
-    <ValidationMessage For="@(() => LostItem.Picture)" />
+    <ValidationMessage For="@(() => FoundItem.Picture)" />
 
     @if (!string.IsNullOrWhiteSpace(fileError))
     {
@@ -40,7 +40,7 @@
 </div>
 @code {
     [Parameter]
-    public LostItem LostItem { get; set; } = new();
+    public FoundItem FoundItem { get; set; } = new();
 
     [Parameter]
     public EventCallback<IBrowserFile> OnFileSelected { get; set; }
@@ -70,7 +70,7 @@
                         "Only JPG, JPEG and PNG images are allowed.";
 
             selectedFile = null;
-            LostItem.Picture = string.Empty;
+            FoundItem.Picture = string.Empty;
 
             return;
         }
@@ -79,7 +79,7 @@
 
         selectedFile = file;
 
-        LostItem.Picture = selectedFile.Name;
+        FoundItem.Picture = selectedFile.Name;
 
         await OnFileSelected.InvokeAsync(selectedFile);
     }

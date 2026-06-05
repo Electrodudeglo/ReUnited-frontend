@@ -1,25 +1,25 @@
 ﻿@using ReUnited_frontend.DataModels
-@page "/lostitems/{Id:int}"
+@page "/founditems/{Id:int}"
 
 <div style="">  
-    @if (LostItem == null)
+    @if (FoundItem == null)
     {
         <div>
-            <h3>Cannot load lost items</h3>
+            <h3>Cannot load found items</h3>
             <p>@errorMessage</p>
         </div>
     }
     else
     {
         <div>
-            <LostItemSummary LostItem="@LostItem" />
+            <FoundItemSummary FoundItem="@FoundItem" />
         </div>
     }
 </div>
 
 @code {
     [Parameter]
-    public LostItem? LostItem { get; set; }
+    public FoundItem? FoundItem { get; set; }
     [Parameter]
     public int Id { get; set; }
     public HttpClient Client = new HttpClient();
@@ -29,7 +29,7 @@
     {
         try
         {
-            LostItem = await Client.GetFromJsonAsync<LostItem>($"http://localhost:5265/api/lostitems/{Id}");
+            FoundItem = await Client.GetFromJsonAsync<FoundItem>($"http://localhost:5265/api/founditems/{Id}");
             isLoading = false;
         }
         catch (Exception ex)

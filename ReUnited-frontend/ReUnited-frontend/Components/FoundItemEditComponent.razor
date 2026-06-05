@@ -25,7 +25,7 @@ else
         <div class="control">
             <InputText class="input"
                        placeholder="e.g. Black iPhone 15 with a cracked screen"
-                       @bind-Value="EditLostItem.ItemDescription" />
+                       @bind-Value="EditFoundItem.ItemDescription" />
         </div>
     </div>
 
@@ -34,7 +34,7 @@ else
         <div class="control">
             <InputText class="input"
                        placeholder="e.g. London"
-                       @bind-Value="EditLostItem.City" />
+                       @bind-Value="EditFoundItem.City" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -42,7 +42,6 @@ else
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        @* <p class="help is-danger">This email is invalid</p> *@
     </div>
 
     <div class="field">
@@ -50,7 +49,7 @@ else
         <div class="control">
             <InputText class="input"
                        placeholder="e.g. SW1A 1AA"
-                       @bind-Value="EditLostItem.Postcode" />
+                       @bind-Value="EditFoundItem.Postcode" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -58,14 +57,13 @@ else
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
         </div>
-        @* <p class="help is-danger">This email is invalid</p> *@
     </div>
 
     <div class="field">
         <label class="label">Category</label>
         <div class="control">
             <div class="select">
-                <InputSelect @bind-Value="EditLostItem.Category">
+                <InputSelect @bind-Value="EditFoundItem.Category">
                     <option value="">Select Category</option>
                     @foreach (var cat in Categories)
                     {
@@ -80,8 +78,8 @@ else
         <label class="label">Additional Information</label>
         <div class="control">
             <InputTextArea class="textarea"
-                           placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
-                           @bind-Value="EditLostItem.AdditionalInformation" />
+                           placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was found."
+                           @bind-Value="EditFoundItem.AdditionalInformation" />
         </div>
     </div>
 
@@ -90,7 +88,7 @@ else
         <div class="control">
             <InputText class="input" id="email"
                        placeholder="e.g. name@example.com"
-                       @bind-Value="EditLostItem.Email" />
+                       @bind-Value="EditFoundItem.Email" />
         </div>
     </div>
 
@@ -99,7 +97,7 @@ else
         <div class="control">
             <InputText class="input" id="phone"
                        placeholder="e.g. 07123456789"
-                       @bind-Value="EditLostItem.PhoneNumber" />
+                       @bind-Value="EditFoundItem.PhoneNumber" />
         </div>
     </div>
 
@@ -123,7 +121,7 @@ else
 @rendermode InteractiveServer
 
 	[Parameter]
-public LostItem EditLostItem { get; set; } = new();
+public FoundItem EditFoundItem { get; set; } = new();
 
 public string PlaceHolderImage { get; set; } = "images/placeholder.png";
 
@@ -131,14 +129,13 @@ public string PlaceHolderImage { get; set; } = "images/placeholder.png";
 public bool SuccessMessage { get; set; } = false;
 
 [Parameter]
-public EventCallback<LostItem> OnSave { get; set; }
+public EventCallback<FoundItem> OnSave { get; set; }
 
-public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+public List<CategoryItem> Categories { get; set; } = FoundItemCategories.GetCategories();
 
 private async Task SaveItem()
 {
-    Console.WriteLine("hitting saveitem");
-    await OnSave.InvokeAsync(EditLostItem);
+    await OnSave.InvokeAsync(EditFoundItem);
 }
 
 }
