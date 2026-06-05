@@ -48,6 +48,79 @@ html, body {
     margin-top: auto;
 }
 
+/*Lost Item Single View CSS style*/
+
+.lost-item-page {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.lost-item-card {
+    max-width: 380px; /* much smaller */
+    width: 100%;
+    background: #111; /* dark card */
+    border-radius: 10px;
+    padding: 1.5rem;
+    color: #ddd; /* soft gray text */
+    border: 1px solid #222; /* subtle outline */
+}
+
+.lost-item-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto 1rem auto;
+}
+
+.found-box {
+    background: #1a1a1a;
+    padding: .75rem;
+    border-radius: 6px;
+    border: 1px solid #222;
+    margin-bottom: 1rem;
+}
+
+.map-preview {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+    .map-preview .map-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        opacity: 0.9;
+        transition: opacity .2s ease;
+    }
+
+        .map-preview .map-image:hover {
+            opacity: 1;
+        }
+
+.details-grid p {
+    margin-bottom: .4rem;
+    color: #ccc;
+}
+
+.card-footer {
+    background: transparent;
+    border-top: 1px solid #222;
+}
+
+.card-footer-item {
+    color: #aaa;
+}
+
+    .card-footer-item:hover {
+        background: #1a1a1a;
+        color: white;
+    }
+
+
 .truncate {
     white-space: nowrap;
     overflow: hidden;

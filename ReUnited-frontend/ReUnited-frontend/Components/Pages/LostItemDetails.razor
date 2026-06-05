@@ -1,35 +1,30 @@
 ﻿@using ReUnited_frontend.DataModels
 @page "/lostitems/{Id:int}"
 
-<h3>LostItemDetails</h3>
-
-@if (LostItem == null)
-{
-    <div>
-        <h3>Cannot load lost items</h3>
-        <p>@errorMessage</p>
-    </div>
-}
-else
-{
-    <div>
-        <LostItemSummary LostItem="@LostItem" />
-    </div>
-}
-
+<div style="">  
+    @if (LostItem == null)
+    {
+        <div>
+            <h3>Cannot load lost items</h3>
+            <p>@errorMessage</p>
+        </div>
+    }
+    else
+    {
+        <div>
+            <LostItemSummary LostItem="@LostItem" />
+        </div>
+    }
+</div>
 
 @code {
     [Parameter]
     public LostItem? LostItem { get; set; }
-
     [Parameter]
     public int Id { get; set; }
-
     public HttpClient Client = new HttpClient();
     public bool isLoading = true;
     private string? errorMessage = String.Empty;
-
-
     protected override async Task OnInitializedAsync()
     {
         try
@@ -41,8 +36,6 @@ else
         {
             Console.WriteLine(ex.Message);
             errorMessage = $"An error occurred: {ex.Message}";
-
         }
     }
-
 }

@@ -1,28 +1,59 @@
 ﻿@using ReUnited_frontend.DataModels
-<h3>LostItemSummary</h3>
 
-<div class="card" style="width: 250px">
-    <div class="card-image">
-        <figure class="image" style="width: 250px">
-            <NavLink href="@($"/lostitems/{LostItem.Id}")">
-                <img src="images/reunitedlogo.png"
-                     alt="Album image" />
+<div class="lost-item-page">
 
-            </NavLink>
-        </figure>
-    </div>
-    <div class="card-content">
-        <div class="content">
-            <h4>@LostItem.ItemDescription</h4>
-            <p>@LostItem.City</p>
-            <p>@LostItem.Postcode</p>
-            <p>@LostItem.Email</p>
-            <p>@LostItem.PhoneNumber</p>
-            <p>@LostItem.Category</p>
-            <p>@LostItem.AdditionalInformation</p>
+    <div class="lost-item-card">
+
+		<img src="uploads/e131b03b-222e-4992-a315-2d45f4324622.jpg"
+             alt="Lost item image"
+             class="lost-item-image" />
+
+        <h3 class="title is-5 has-text-centered" style="color: #eee;">
+            @LostItem.ItemDescription
+        </h3>
+
+        <div class="found-box">
+            <p class="has-text-weight-semibold">Found at</p>
+            <p>@LostItem.City @LostItem.Postcode</p>
         </div>
+
+        
+        <div class="map-preview">
+            <a href="https://www.google.com/maps"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <img src="Images/maps.png"
+                     class="map-image"
+                     alt="Map preview" />
+            </a>
+        </div>
+
+
+       
+
+        <div class="details-grid">
+            <p><strong>Email:</strong> @LostItem.Email</p>
+            <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
+            <p><strong>Category:</strong> @LostItem.Category</p>
+            <p class="mb-5"><strong>Notes:</strong> @LostItem.AdditionalInformation</p>
+        </div>
+
+        <footer class="card-footer">
+            <NavLink class="card-footer-item button mr-5"
+                     href="@($"/lostitems/edit/{LostItem.Id}")">
+                Edit
+            </NavLink>
+
+            <a class="card-footer-item button is-danger">
+                Delete
+            </a>
+        </footer>
+
     </div>
+
 </div>
+
 
 
 @code {
