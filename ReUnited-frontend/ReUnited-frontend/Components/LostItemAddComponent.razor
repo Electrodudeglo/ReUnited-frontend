@@ -1,118 +1,139 @@
 ﻿@using ReUnited_frontend.DataModels
 @rendermode InteractiveServer
 
-<h3>AddLostItemComponent</h3>
+@if (SuccessMessage == true)
+{
+    <div class="has-text-centered">
 
-<EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Check--Streamline-Ultimate" height="100" width="100">
+            <desc>
+                Check Streamline Icon: https://streamlinehq.com
+            </desc>
+            <path fill="#78eb7b" d="M1.98657 13.7043c-0.4235 0.4235 -0.4235 1.1101 0 1.5336l5.20337 5.2042c0.42414 0.4225 1.11017 0.4225 1.53441 0L22.013 7.1525c0.4235 -0.42341 0.4235 -1.10999 0 -1.53349l-2.0591 -2.05994c-0.4235 -0.42414 -1.1108 -0.42414 -1.5344 0L7.9571 14.0224l-2.37701 -2.3781c-0.42378 -0.4235 -1.11073 -0.4235 -1.53441 0l-2.05911 2.06Z" stroke-width="1"></path>
+            <path fill="#c9f7ca" d="M7.95731 17.1666 20.7591 4.3649l-0.8086 -0.8085c-0.4238 -0.42359 -1.1106 -0.42359 -1.5344 0L7.95731 14.0224 5.5803 11.6443c-0.42359 -0.424 -1.1109 -0.424 -1.5344 0l-0.8086 0.8086 4.72001 4.7137Z" stroke-width="1"></path>
+            <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round" d="M1.98657 13.7043c-0.4235 0.4235 -0.4235 1.1101 0 1.5336l5.20337 5.2042c0.42414 0.4225 1.11017 0.4225 1.53441 0L22.013 7.1525c0.4235 -0.42341 0.4235 -1.10999 0 -1.53349l-2.0591 -2.05994c-0.4235 -0.42414 -1.1108 -0.42414 -1.5344 0L7.9571 14.0224l-2.37701 -2.3781c-0.42378 -0.4235 -1.11073 -0.4235 -1.53441 0l-2.05911 2.06Z" stroke-width="1"></path>
+        </svg>
 
-    <div class="field">
-        <label class="label">Item Description</label>
-
-        <div class="control">
-            <InputText class="input"
-                       placeholder="e.g. Black iPhone 15 with a cracked screen"
-                       @bind-Value="LostItem.ItemDescription" />
+        <div class="is-size-1">
+            Submitted!
         </div>
 
-        <p class="help is-danger">
-            <ValidationMessage For="@(() => LostItem.ItemDescription)" />
-        </p>
     </div>
+}
 
-    <div class="field">
-        <label class="label">City</label>
-        <div class="control">
-            <InputText class="input"
-                       placeholder="e.g. London"
-                       @bind-Value="LostItem.City" />
+else
+{
+    <EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="field">
+            <label class="label">Item Description</label>
+
+            <div class="control">
+                <InputText class="input"
+                           placeholder="e.g. Black iPhone 15 with a cracked screen"
+                           @bind-Value="LostItem.ItemDescription" />
+            </div>
+
+            <p class="help is-danger">
+                <ValidationMessage For="@(() => LostItem.ItemDescription)" />
+            </p>
         </div>
-        <ValidationMessage For="@(() => LostItem.City)" />
-    </div>
 
-    <div class="field">
-        <label class="label">Postcode</label>
-        <div class="control">
-            <InputText class="input"
-                       placeholder="e.g. SW1A 1AA"
-                       @bind-Value="LostItem.Postcode" />
+        <div class="field">
+            <label class="label">City</label>
+            <div class="control">
+                <InputText class="input"
+                           placeholder="e.g. London"
+                           @bind-Value="LostItem.City" />
+            </div>
+            <ValidationMessage For="@(() => LostItem.City)" />
         </div>
-        <ValidationMessage For="@(() => LostItem.Postcode)" />
-    </div>
 
-    <div class="field">
-        <label class="label">Category</label>
+        <div class="field">
+            <label class="label">Postcode</label>
+            <div class="control">
+                <InputText class="input"
+                           placeholder="e.g. SW1A 1AA"
+                           @bind-Value="LostItem.Postcode" />
+            </div>
+            <ValidationMessage For="@(() => LostItem.Postcode)" />
+        </div>
 
-        <div class="control">
-            <div class="select is-fullwidth">
-                <InputSelect @bind-Value="LostItem.Category">
-                    <option value="">Select Category</option>
-                    @foreach (var cat in Categories)
-                    {
-                        <option>@cat.Name</option>
-                    }
-                </InputSelect>
+        <div class="field">
+            <label class="label">Category</label>
+
+            <div class="control">
+                <div class="select is-fullwidth">
+                    <InputSelect @bind-Value="LostItem.Category">
+                        <option value="">Select Category</option>
+                        @foreach (var cat in Categories)
+                        {
+                            <option>@cat.Name</option>
+                        }
+                    </InputSelect>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="field">
-        <label class="label">Additional Information</label>
-        <div class="control">
-            <InputTextArea class="textarea"
-                           placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
-                           @bind-Value="LostItem.AdditionalInformation" />
-        </div>
-    </div>
-
-    <div class="field">
-        <label class="label">Email</label>
-
-        <div class="control has-icons-left">
-            <InputText class="input"
-                       placeholder="e.g. name@example.com"
-                       @bind-Value="LostItem.Email" />
-
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
+        <div class="field">
+            <label class="label">Additional Information</label>
+            <div class="control">
+                <InputTextArea class="textarea"
+                               placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
+                               @bind-Value="LostItem.AdditionalInformation" />
+            </div>
         </div>
 
-        <ValidationMessage For="@(() => LostItem.Email)" />
-    </div>
+        <div class="field">
+            <label class="label">Email</label>
 
-    <div class="field">
-        <label class="label">Phone Number</label>
+            <div class="control has-icons-left">
+                <InputText class="input"
+                           placeholder="e.g. name@example.com"
+                           @bind-Value="LostItem.Email" />
 
-        <div class="control">
-            <InputText class="input"
-                       placeholder="e.g. 07123456789"
-                       @bind-Value="LostItem.PhoneNumber" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+            </div>
+
+            <ValidationMessage For="@(() => LostItem.Email)" />
         </div>
 
-        <p class="help is-danger">
-            <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
-        </p>
-    </div>
+        <div class="field">
+            <label class="label">Phone Number</label>
 
-    <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected" />
+            <div class="control">
+                <InputText class="input"
+                           placeholder="e.g. 07123456789"
+                           @bind-Value="LostItem.PhoneNumber" />
+            </div>
 
-    <div class="field is-grouped">
-        <div class="control">
-            <button type="submit" class="button is-primary">
-                Submit
-            </button>
+            <p class="help is-danger">
+                <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
+            </p>
         </div>
 
-        <div class="control">
-            <NavLink href="@("/")">
-                <button type="button" class="button is-light">
-                    Cancel
+        <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected" />
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button type="submit" class="button is-primary">
+                    Submit
                 </button>
-            </NavLink>
+            </div>
+
+            <div class="control">
+                <NavLink href="@("/")">
+                    <button type="button" class="button is-light">
+                        Cancel
+                    </button>
+                </NavLink>
+            </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
+}
 
 
 @code {
@@ -121,6 +142,9 @@
 
     [Parameter]
     public EventCallback<(LostItem Item, IBrowserFile? File)> OnSave { get; set; }
+
+    [Parameter]
+    public bool SuccessMessage { get; set; } = false;
 
     private IBrowserFile? selectedFile;
 
