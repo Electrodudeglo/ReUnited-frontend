@@ -78,7 +78,8 @@
                     <td class="truncate">@item.AdditionalInformation</td>
                     <td>
                         <figure class="image is-64x64">
-                            <img src="@($"uploads/{item.Picture}")" />
+                            <img src="@item.Picture"
+                                 alt="@item.ItemDescription" />
                         </figure>
                     </td>
                     @if (User.Authenticated)
