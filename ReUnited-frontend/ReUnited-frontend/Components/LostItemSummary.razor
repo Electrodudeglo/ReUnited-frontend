@@ -1,29 +1,29 @@
 ﻿@using ReUnited_frontend.DataModels
-<h3>LostItemSummary</h3>
 
-<div class="card" style="width: 250px">
-    <div class="card-image">
-        <figure class="image" style="width: 250px">
-            <NavLink href="@($"/lostitems/{LostItem.Id}")">
-                <img src="images/reunitedlogo.png"
-                     alt="Album image" />
-
-            </NavLink>
-        </figure>
-    </div>
-    <div class="card-content">
-        <div class="content">
-            <h4>@LostItem.ItemDescription</h4>
-            <p>@LostItem.City</p>
-            <p>@LostItem.Postcode</p>
-            <p>@LostItem.Email</p>
-            <p>@LostItem.PhoneNumber</p>
-            <p>@LostItem.Category</p>
-            <p>@LostItem.AdditionalInformation</p>
+<div style="display: flex; justify-content: center;">
+    <div class="card" style="width: 280px; margin: 0 auto; padding: 1rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); text-align: center;">
+        <div class="card-image">
+            <figure class="image" style="width: 200px; margin: 0 auto;">
+                <NavLink href="@($"/lostitems/{LostItem.Id}")">
+                    <img src="images/reunitedlogo.png"
+                         alt="Album image"
+                         style="width: 100%; border-radius: 8px;" />
+                </NavLink>
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="content">
+                <h4 style="margin: 1rem 0 0.5rem;">@LostItem.ItemDescription</h4>
+                <p>@LostItem.City</p>
+                <p>@LostItem.Postcode</p>
+                <p>@LostItem.Email</p>
+                <p>@LostItem.PhoneNumber</p>
+                <p>@LostItem.Category</p>
+                <p>@LostItem.AdditionalInformation</p>
+            </div>
         </div>
     </div>
 </div>
-
 
 @code {
     [Parameter]
