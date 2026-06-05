@@ -1,5 +1,4 @@
 ﻿@page "/lostitems/add"
-@inject IWebHostEnvironment Environment
 @rendermode InteractiveServer
 @using ReUnited_frontend.DataModels
 
@@ -11,12 +10,19 @@
         <p>@errorMessage</p>
     </div>
 }
+else if (errorMessage != null)
+{
+    <div class="notification is-danger">
+        <p>@errorMessage</p>
+    </div>
+}
 else
 {
     <div class="fixed-grid has-3-cols">
         <div class="grid">
             <div class="cell is-col-start-2">
-                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem" />
+                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"
+                  SuccessMessage="SuccessItem"/>
             </div>
 
         </div>
@@ -32,43 +38,82 @@ else
 
     private HttpClient Client = new HttpClient();
     public bool isLoading = true;
-    private string? errorMessage = String.Empty;
+    private string? errorMessage;
+    public bool SuccessItem { get; set; }
 
 
     private async Task SaveLostItem((LostItem Item, IBrowserFile? File) data)
     {
         try
         {
-            var lostItem = data.Item;
+            using var content =
+                        new MultipartFormDataContent();
+
+            content.Add(
+                new StringContent(data.Item.City),
+                "City");
+
+            content.Add(
+                new StringContent(data.Item.Postcode),
+                "Postcode");
+
+            content.Add(
+                new StringContent(
+                    data.Item.Email ?? string.Empty),
+                "Email");
+
+            content.Add(
+                new StringContent(
+                    data.Item.PhoneNumber ?? string.Empty),
+                "PhoneNumber");
+
+            content.Add(
+                new StringContent(
+                    data.Item.Category),
+                "Category");
+
+            content.Add(
+                new StringContent(
+                    data.Item.ItemDescription),
+                "ItemDescription");
+
+            content.Add(
+                new StringContent(
+                    data.Item.AdditionalInformation),
+                "AdditionalInformation");
 
             if (data.File is not null)
             {
-                var uploadsFolder =
-                    Path.Combine(Environment.WebRootPath, "uploads");
 
-                Directory.CreateDirectory(uploadsFolder);
+                var stream =
+                    data.File.OpenReadStream(10 * 1024 * 1024);
 
-                var fileName =
-                    $"{Guid.NewGuid()}{Path.GetExtension(data.File.Name)}";
+                var fileContent =
+                    new StreamContent(stream);
 
-                var filePath =
-                    Path.Combine(uploadsFolder, fileName);
+                fileContent.Headers.ContentType =
+                    new System.Net.Http.Headers
+                        .MediaTypeHeaderValue(
+                            data.File.ContentType);
 
-                await using var stream =
-                    new FileStream(filePath, FileMode.Create);
-
-                await data.File
-                    .OpenReadStream(10 * 1024 * 1024)
-                    .CopyToAsync(stream);
-
-                lostItem.Picture = fileName;
+                content.Add(
+                    fileContent,
+                    "Image",
+                    data.File.Name);
             }
-            
-            var response = await Client.PostAsJsonAsync<LostItem>("http://localhost:5265/api/lostitems", lostItem);
 
-            if (response != null)
+            var response =
+                await Client.PostAsync(
+                    "http://localhost:5265/api/lostitems", 
+                    content);
+
+            if (response.IsSuccessStatusCode)
             {
-                response.EnsureSuccessStatusCode();
+                SuccessItem = true;
+            }
+            else
+            {
+                errorMessage = "Failed to update item.";
             }
 
             isLoading = false;

@@ -1,12 +1,15 @@
-﻿@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.Components.UI
+@using ReUnited_frontend.DataModels
 @using System.Text.Json.Serialization
 
 
 @if (_summaryLoader != null)
-{	
+{
 	<div>
-		<LostItemsSummaryList LostItems="_summaryLoader"/>
+		<LostItemsSummaryList 
+			LostItems="_summaryLoader"/>
 	</div>
+	
 }
 
 else {
@@ -18,10 +21,14 @@ else {
 }
 
 @code {
-
+	@rendermode InteractiveServer
 	private List<LostItem> _summaryLoader { get; set; } = new();
 
 	private string errorMessage = "";
+
+	private bool showDeleteModal = true;
+
+	private LostItem? selectedItem;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -42,5 +49,40 @@ else {
 			errorMessage = $"An error occurred: {ex.Message}";
 		}
 	}
+	private async Task OpenDeleteModal(LostItem item)
+	{
+		selectedItem = item;
+		showDeleteModal = true;
+		await InvokeAsync(StateHasChanged);
+	}
 
+	private void CloseDeleteModal()
+	{
+		selectedItem = null;
+		showDeleteModal = false;
+	}
+
+	private async Task DeleteItem(LostItem item)
+	{
+        Console.WriteLine($"Attempting to delete item with ID: {item.Id}");
+		try
+		{
+			var http = new HttpClient(); 
+			var response = await http.DeleteAsync(
+				$"http://localhost:5265/api/lostitems/{item.Id}"
+			);
+
+			_summaryLoader = _summaryLoader
+			.Where(x => x.Id != item.Id)
+			.ToList();
+	                    
+			CloseDeleteModal();
+		}
+		catch (Exception ex)
+		{
+			errorMessage = $"Delete failed: {ex.Message}";
+		}
+	}
 }
+
+

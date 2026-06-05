@@ -1,62 +1,177 @@
-﻿@using ReUnited_frontend.DataModels
+﻿@using ReUnited_frontend.Components.UI
+@using ReUnited_frontend.DataModels
 
-<h3 class="title is-4">Lost Items</h3>
+@rendermode InteractiveServer
+
+<div class="container is-fluid px-4">
+    <button type="button" class="button @(IsFilterDropdownOpen ? "is-success is-outlined" : "is-dark")"
+            @onclick="ToggleFilterDropDown">
+        Filters
+    </button>
+
+    
+
+    <div>
+        <div class="buttons mt-2">
+            <div class="buttons">
+                @if (IsFilterDropdownOpen)
+                {
+                    
+                    foreach (var cat in Categories)
+                    {
+                        <button type=button class="button @(cat.IsSelected ? "is-primary is-outlined" : "is-dark is-outlined")" @onclick="() => ToggleCategory(cat)">
+                            @cat.Name
+                        </button>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<br />
 
 <div class="table-container">
-    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
+@if (ShowModal)
+{
+    <LostItemDeleteModal HideModal="HideModal"
+                         Modal="OnHandleModal" />
+}
 
+</div>
+
+<div class="container is-fluid">
+    <table class="table is-striped is-hoverable is-fullwidth is-bordered">
         <thead>
             <tr>
                 <th>Item</th>
                 <th>City</th>
                 <th>Postcode</th>
                 <th>Category</th>
-                <th>Description</th>
-                <th>Info</th>
-                <th>Contact</th>
+                <th>Additional Information</th>
+                <th>Image</th>
+                @if (User.Authenticated)
+                {
+                    <th>Edit</th>
+                    <th>Delete</th>
+                }
             </tr>
         </thead>
-
         <tbody>
+
             @foreach (var item in LostItems)
             {
+                if (CheckIfFilter() && !IsFilterContains(item))
+                {
+                    continue;
+                }
                 <tr>
                     <th>
                         <NavLink href="@($"/lostitems/{item.Id}")">
                             @item.ItemDescription
                         </NavLink>
                     </th>
-
-
                     <td>@item.City</td>
-
                     <td>@item.Postcode</td>
-
                     <td>@item.Category</td>
-
-                    <td>@item.AdditionalInformation</td>
-
+                    <td class="truncate">@item.AdditionalInformation</td>
                     <td>
                         <figure class="image is-64x64">
-                            <img src="@($"uploads/{item.Picture}")" />
+                            <img src="@item.Picture"
+                                 alt="@item.ItemDescription" />
                         </figure>
                     </td>
+                    @if (User.Authenticated)
+                    {
+                        <td>
+                            <button class="button is-white">Edit</button>
+                        </td>
 
-                    <td>
-                        <div>
-                            <strong>@item.Email</strong><br />
-                            @item.PhoneNumber
-                        </div>
-                    </td>
+                        <td>
+                            <button class="button is-danger" @onclick="ChangeModal">Delete</button>
+                        </td>
+                    }
+
                 </tr>
             }
         </tbody>
-
     </table>
 </div>
 
 
+
+
 @code {
+
     [Parameter]
     public List<LostItem> LostItems { get; set; } = new();
+
+    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+
+    public bool IsFilterDropdownOpen { get; set; }
+
+    [Parameter]
+    public EventCallback<LostItem> OnDeleteRequested { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> UpdateModal { get; set; }
+
+    public bool ShowModal { get; set; } = false;
+
+    public bool HideModal { get; set; }
+
+    public void ToggleFilterDropDown()
+    {
+        IsFilterDropdownOpen = !IsFilterDropdownOpen;
+    }
+
+
+    public void ToggleCategory(CategoryItem item)
+    {
+        item.IsSelected = !item.IsSelected;
+    }
+
+    public bool CheckIfFilter()
+    {
+        foreach (var item in Categories)
+        {
+            if (item.IsSelected == true)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsFilterContains(LostItem item)
+    {
+        foreach (var category in Categories)
+        {
+            if (category.IsSelected && category.Name == item.Category)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ChangeModal()
+    {
+        ShowModal = true;
+    }
+
+    public async Task OnHandleModal(bool value)
+    {
+        ShowModal = value; // false → hide modal
+        StateHasChanged();
+    }
+
+    private async Task DeleteRequested(LostItem item)
+    {
+        await OnDeleteRequested.InvokeAsync(item);
+    }
+
 }

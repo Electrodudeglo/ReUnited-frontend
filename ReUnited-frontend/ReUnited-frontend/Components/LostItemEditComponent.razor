@@ -1,7 +1,6 @@
-﻿
-@if(SuccessMessage == true)
-{    
-   <div class="has-text-centered">
+﻿@if (SuccessMessage == true)
+{
+    <div class="has-text-centered">
 
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Check--Streamline-Ultimate" height="100" width="100">
             <desc>
@@ -16,7 +15,7 @@
             Submitted!
         </div>
 
-   </div>
+    </div>
 }
 
 else
@@ -24,14 +23,18 @@ else
     <div class="field">
         <label class="label">Item Description</label>
         <div class="control">
-            <InputText class="input" @bind-Value="EditLostItem.ItemDescription" />
+            <InputText class="input"
+                       placeholder="e.g. Black iPhone 15 with a cracked screen"
+                       @bind-Value="EditLostItem.ItemDescription" />
         </div>
     </div>
 
     <div class="field">
         <label class="label">City</label>
         <div class="control">
-            <InputText class="input" @bind-Value="EditLostItem.City" />
+            <InputText class="input"
+                       placeholder="e.g. London"
+                       @bind-Value="EditLostItem.City" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -45,7 +48,9 @@ else
     <div class="field">
         <label class="label">Post Code</label>
         <div class="control">
-            <InputText class="input" @bind-Value="EditLostItem.Postcode" />
+            <InputText class="input"
+                       placeholder="e.g. SW1A 1AA"
+                       @bind-Value="EditLostItem.Postcode" />
             <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
             </span>
@@ -60,11 +65,13 @@ else
         <label class="label">Category</label>
         <div class="control">
             <div class="select">
-                <select>
-                    <option>Select Category</option>
-                    <option>Electronics</option>
-                    <option>Keys</option>
-                </select>
+                <InputSelect @bind-Value="EditLostItem.Category">
+                    <option value="">Select Category</option>
+                    @foreach (var cat in Categories)
+                    {
+                        <option>@cat.Name</option>
+                    }
+                </InputSelect>
             </div>
         </div>
     </div>
@@ -72,36 +79,28 @@ else
     <div class="field">
         <label class="label">Additional Information</label>
         <div class="control">
-            <InputTextArea class="textarea" @bind-Value="EditLostItem.AdditionalInformation" />
+            <InputTextArea class="textarea"
+                           placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
+                           @bind-Value="EditLostItem.AdditionalInformation" />
         </div>
     </div>
 
     <div class="field">
         <label class="label" for="email">Email</label>
         <div class="control">
-            <InputText class="input" id="email" @bind-Value="EditLostItem.Email" />
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
+            <InputText class="input" id="email"
+                       placeholder="e.g. name@example.com"
+                       @bind-Value="EditLostItem.Email" />
         </div>
-        @* <p class="help is-danger">This email is invalid</p> *@
     </div>
 
     <div class="field">
         <label class="label" for="phone">Phone Number</label>
         <div class="control">
-            <InputText class="input" id="phone" @bind-Value="EditLostItem.PhoneNumber" />
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
+            <InputText class="input" id="phone"
+                       placeholder="e.g. 07123456789"
+                       @bind-Value="EditLostItem.PhoneNumber" />
         </div>
-        @* <p class="help is-danger">This email is invalid</p> *@
     </div>
 
     <div class="file has-name is-boxed">
@@ -114,11 +113,11 @@ else
                 <span class="file-label"> Choose a file… </span>
             </span>
             <span class="file-name"> Screen Shot 2017-07-29 at 15.54.25.png</span>
-            
+
         </label>
     </div>
     <InputText @bind-Value="PlaceHolderImage" />
-    
+
     <div class="field is-grouped mb-5">
         <div class="control">
             <button @onclick="SaveItem" class="button is-link">Submit</button>
@@ -139,20 +138,22 @@ else
 @rendermode InteractiveServer
 
 	[Parameter]
-	public LostItem EditLostItem { get; set; } = new();
+public LostItem EditLostItem { get; set; } = new();
 
-    public string PlaceHolderImage { get; set; } = "images/placeholder.png";
+public string PlaceHolderImage { get; set; } = "images/placeholder.png";
 
-	[Parameter]
-	public bool SuccessMessage { get; set; } = false;
+[Parameter]
+public bool SuccessMessage { get; set; } = false;
 
-	[Parameter]
-	public EventCallback<LostItem> OnSave { get; set; }
+[Parameter]
+public EventCallback<LostItem> OnSave { get; set; }
 
-	private async Task SaveItem()
-	{
-		Console.WriteLine("hitting saveitem");
-		await OnSave.InvokeAsync(EditLostItem);
-	}
+public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+
+private async Task SaveItem()
+{
+    Console.WriteLine("hitting saveitem");
+    await OnSave.InvokeAsync(EditLostItem);
+}
 
 }
