@@ -10,12 +10,19 @@
         <p>@errorMessage</p>
     </div>
 }
+else if (errorMessage != null)
+{
+    <div class="notification is-danger">
+        <p>@errorMessage</p>
+    </div>
+}
 else
 {
     <div class="fixed-grid has-3-cols">
         <div class="grid">
             <div class="cell is-col-start-2">
-                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem" />
+                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"
+                  SuccessMessage="SuccessItem"/>
             </div>
 
         </div>
@@ -31,7 +38,8 @@ else
 
     private HttpClient Client = new HttpClient();
     public bool isLoading = true;
-    private string? errorMessage = String.Empty;
+    private string? errorMessage;
+    public bool SuccessItem { get; set; }
 
 
     private async Task SaveLostItem((LostItem Item, IBrowserFile? File) data)
@@ -99,14 +107,13 @@ else
                     "http://localhost:5265/api/lostitems", 
                     content);
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                var error =
-                    await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine(error);
-
-                throw new Exception(error);
+                SuccessItem = true;
+            }
+            else
+            {
+                errorMessage = "Failed to update item.";
             }
 
             isLoading = false;
