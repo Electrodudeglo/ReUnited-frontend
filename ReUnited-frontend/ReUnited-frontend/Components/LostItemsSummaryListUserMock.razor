@@ -59,7 +59,7 @@
         </thead>
         <tbody>
 
-            @foreach (var item in LostItems.Take(2))
+            @foreach (var item in LostItems.TakeLast(2))
             {
 
                 if (CheckIfFilter() && !IsFilterContains(item))
@@ -83,7 +83,10 @@
                         </figure>
                     </td>
                     <td>
-                            <button class="button is-white">Edit</button>
+                        <NavLink class="button is-white mr-5"
+                                 href="@($"/lostitems/edit/{item.Id}")">
+                            Edit
+                        </NavLink>
                         </td>
 
                         <td>
