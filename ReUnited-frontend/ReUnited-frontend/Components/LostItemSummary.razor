@@ -54,16 +54,21 @@ else
 }
 
 @code {
-    @using ReUnited_frontend.DataModels
-    @using Microsoft.AspNetCore.Components
-    @rendermode InteractiveServer
+@using ReUnited_frontend.DataModels
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
 
-    [Parameter] public LostItem LostItem { get; set; }
+    [Parameter] public LostItem LostItem { get; set; } = new();
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    [Inject]
+    public HttpClient Http { get; set; } = new();
+
     public bool ShowModal { get; set; } = false;
+
+    private bool Debug = true;
 
     private void ShowDeleteModal()
     {
@@ -75,17 +80,31 @@ else
         ShowModal = false;
     }
 
-    private async Task HandleDeleteConfirmed(LostItem item)
+private async Task HandleDeleteConfirmed(LostItem item)
+{
+    try
     {
-        // Placeholder delete logic
-        Console.WriteLine($"Deleting item: {item.Id} - {item.ItemDescription}");
+        var url = $"http://localhost:5265/api/lostitems/{item.Id}";
+        var response = await Http.DeleteAsync(url);
 
-        // TODO: Call API delete endpoint here
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"Deleted item {item.Id}");
 
-        // Close modal after delete
-        ShowModal = false;
+            ShowModal = false;
 
-        // TODO: Redirect to home page later
-        NavigationManager.NavigateTo("/lostitems", forceLoad: true);
+            // Redirect home
+            NavigationManager.NavigateTo("/lostitems");
+        }
+        else
+        {
+            Console.WriteLine($"Delete failed: {response.StatusCode}");
+        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Delete error: {ex.Message}");
+    }
+  }
+
 }
