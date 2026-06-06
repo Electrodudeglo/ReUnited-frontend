@@ -6,8 +6,8 @@
 @if (_summaryLoader != null)
 {
 	<div>
-		<LostItemsSummaryList 
-			LostItems="_summaryLoader"/>
+		<FoundItemsSummaryList 
+			FoundItems="_summaryLoader"/>
 	</div>
 	
 }
@@ -22,20 +22,20 @@ else {
 
 @code {
 	@rendermode InteractiveServer
-	private List<LostItem> _summaryLoader { get; set; } = new();
+	private List<FoundItem> _summaryLoader { get; set; } = new();
 
 	private string errorMessage = "";
 
 	private bool showDeleteModal = true;
 
-	private LostItem? selectedItem;
+	private FoundItem? selectedItem;
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
 			var http = new HttpClient();
-			var response = await http.GetFromJsonAsync<List<LostItem>>($"http://localhost:5265/api/lostitems");
+			var response = await http.GetFromJsonAsync<List<FoundItem>>($"http://localhost:5265/api/founditems");
 
 		if (response != null)
 		{
@@ -49,7 +49,7 @@ else {
 			errorMessage = $"An error occurred: {ex.Message}";
 		}
 	}
-	private async Task OpenDeleteModal(LostItem item)
+	private async Task OpenDeleteModal(FoundItem item)
 	{
 		selectedItem = item;
 		showDeleteModal = true;
@@ -62,14 +62,14 @@ else {
 		showDeleteModal = false;
 	}
 
-	private async Task DeleteItem(LostItem item)
+	private async Task DeleteItem(FoundItem item)
 	{
         Console.WriteLine($"Attempting to delete item with ID: {item.Id}");
 		try
 		{
 			var http = new HttpClient(); 
 			var response = await http.DeleteAsync(
-				$"http://localhost:5265/api/lostitems/{item.Id}"
+				$"http://localhost:5265/api/founditems/{item.Id}"
 			);
 
 			_summaryLoader = _summaryLoader

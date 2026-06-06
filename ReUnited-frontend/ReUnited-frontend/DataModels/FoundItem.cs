@@ -2,7 +2,7 @@
 
 namespace ReUnited_frontend.DataModels
 {
-    public class LostItem
+    public class FoundItem
     {
         public int Id { get; set; }
 
@@ -22,7 +22,9 @@ namespace ReUnited_frontend.DataModels
 
         public string Picture { get; set; } = string.Empty;
 
-        public LostItem(
+        public string UserId { get; set; } = "";
+
+        public FoundItem(
             int id,
             string city,
             string postcode,
@@ -31,7 +33,8 @@ namespace ReUnited_frontend.DataModels
             string category,
             string itemDescription,
             string additionalInformation,
-            string picture)
+            string picture,
+            string userId)
         {
             Id = id;
             City = city;
@@ -42,8 +45,9 @@ namespace ReUnited_frontend.DataModels
             ItemDescription = itemDescription;
             AdditionalInformation = additionalInformation;
             Picture = picture;
+            UserId = userId;
         }
 
-        public LostItem() { }
+        public FoundItem() { }
     }
 }

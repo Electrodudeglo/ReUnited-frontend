@@ -1,6 +1,9 @@
-﻿@page "/lostitems/delete/{Id:int}"
+﻿@page "/founditems/delete/{Id:int}"
 @using ReUnited_frontend.DataModels
+@using System.Net.Http.Headers
 @inject NavigationManager nav
+@inject HttpClient Http
+
 
 <h3>Delete Confirmation</h3>
 
@@ -32,16 +35,19 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private LostItem? item;
+    private FoundItem? item;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var http = new HttpClient();
+            Http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    User.Token);
 
-            item = await http.GetFromJsonAsync<LostItem>(
-                $"http://localhost:5265/api/lostitems/{Id}"
+            item = await Http.GetFromJsonAsync<FoundItem>(
+                $"http://localhost:5265/api/founditems/{Id}"
             );
         }
         catch
@@ -54,13 +60,11 @@ else
     {
         try
         {
-            var http = new HttpClient();
-
-            await http.DeleteAsync(
-                $"http://localhost:5265/api/lostitems/{Id}"
+            await Http.DeleteAsync(
+                $"http://localhost:5265/api/founditems/{Id}"
             );
 
-            nav.NavigateTo("/lostitems");
+            nav.NavigateTo("/founditems");
         }
         catch
         {
@@ -70,6 +74,6 @@ else
 
     private void Cancel()
     {
-        nav.NavigateTo("/lostitems");
+        nav.NavigateTo("/founditems");
     }
 }
