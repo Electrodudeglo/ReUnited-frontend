@@ -30,11 +30,18 @@
             </NavLink>
 
             <NavLink class="navbar-item" href="@("/lostitems")">
-                Lost Items
+                Found Items
             </NavLink>
 
+            @if (User.Authenticated)
+            {
+                <NavLink class="navbar-item" href="@("/useritems")">
+                Your Submitted Items
+                </NavLink>
+            }
+
             <NavLink class="navbar-item" href="@("/lostitems/add")">
-                Add Lost Item
+                Report Found Item
             </NavLink>
 
             <div class="navbar-item has-dropdown is-hoverable">
@@ -82,7 +89,7 @@
                         <a class="button is-primary" @onclick="LogOut">
                             <strong>Log out</strong>
                         </a>
-                        <p>Admin logged in &nbsp &nbsp</p>
+                        <p>Logged in &nbsp &nbsp</p>
                     </div>
                 </div>
             </div>
