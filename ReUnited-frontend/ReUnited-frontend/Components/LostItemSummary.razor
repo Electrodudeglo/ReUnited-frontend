@@ -1,98 +1,89 @@
-﻿@using ReUnited_frontend.DataModels
-
-@if(ShowModal)
+﻿@if (ShowModal)
 {
-    <LostItemDeleteModal HideModal="HideModal"
-                         Modal="OnHandleModal" />
+    <LostItemDeleteModal OnClose="HandleModalClose"
+                         OnConfirmDelete="HandleDeleteConfirmed"
+                         Item="LostItem" />
 }
+else
+{
+    <div class="lost-item-page">
+        <div class="lost-item-card">
 
-else {
+            <img src="@LostItem.Picture"
+                 alt="Lost item image"
+                 class="lost-item-image" />
 
-<div class="lost-item-page">
+            <h3 class="title is-5 has-text-centered" style="color: #eee;">
+                @LostItem.ItemDescription
+            </h3>
 
-    <div class="lost-item-card">
+            <div class="found-box">
+                <p class="has-text-weight-semibold">Found at</p>
+                <p>@LostItem.City @LostItem.Postcode</p>
+            </div>
 
-		<img src="@LostItem.Picture"
-             alt="Lost item image"
-             class="lost-item-image" />
+            <div class="map-preview">
+                <a href="https://www.google.com/maps"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <img src="Images/maps.png"
+                         class="map-image"
+                         alt="Map preview" />
+                </a>
+            </div>
 
-        <h3 class="title is-5 has-text-centered" style="color: #eee;">
-            @LostItem.ItemDescription
-        </h3>
+            <div class="details-grid">
+                <p><strong>Email:</strong> @LostItem.Email</p>
+                <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
+                <p><strong>Category:</strong> @LostItem.Category</p>
+                <p class="mb-5"><strong>Notes:</strong> @LostItem.AdditionalInformation</p>
+            </div>
 
-        <div class="found-box">
-            <p class="has-text-weight-semibold">Found at</p>
-            <p>@LostItem.City @LostItem.Postcode</p>
+            <footer class="card-footer">
+                <NavLink class="card-footer-item button mr-5"
+                         href="@($"/lostitems/edit/{LostItem.Id}")">
+                    Edit
+                </NavLink>
+
+                <a class="card-footer-item button is-danger"
+                   @onclick="ShowDeleteModal">
+                    Delete
+                </a>
+            </footer>
+
         </div>
-
-        
-        <div class="map-preview">
-            <a href="https://www.google.com/maps"
-               target="_blank"
-               rel="noopener noreferrer">
-
-                <img src="Images/maps.png"
-                     class="map-image"
-                     alt="Map preview" />
-            </a>
-        </div>
-
-        <div class="details-grid">
-            <p><strong>Email:</strong> @LostItem.Email</p>
-            <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
-            <p><strong>Category:</strong> @LostItem.Category</p>
-            <p class="mb-5"><strong>Notes:</strong> @LostItem.AdditionalInformation</p>
-        </div>
-
-        <footer class="card-footer">
-            <NavLink class="card-footer-item button mr-5"
-                     href="@($"/lostitems/edit/{LostItem.Id}")">
-                Edit
-            </NavLink>
-
-            <a class="card-footer-item button is-danger" @onclick="ToggleModal">
-                Delete
-            </a>
-        </footer>
-
     </div>
-
-</div>
 }
-
 
 @code {
+    @using ReUnited_frontend.DataModels
     @rendermode InteractiveServer
 
-
-    [Parameter]
-    public LostItem LostItem { get; set; }
-
-    [Parameter]
-    public EventCallback<LostItem> OnDeleteRequest { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> updateModal { get; set; }
+    [Parameter] public LostItem LostItem { get; set; }
 
     public bool ShowModal { get; set; } = false;
 
-    public bool HideModal { get; set; }
-
-    public void ToggleModal()
+    private void ShowDeleteModal()
     {
         ShowModal = true;
     }
 
-    public async Task OnHandleModal(bool value)
+    private void HandleModalClose()
     {
-        ShowModal = value;
-        StateHasChanged();
+        ShowModal = false;
     }
 
-    private async Task DeleteRequest(LostItem item)
+    private async Task HandleDeleteConfirmed(LostItem item)
     {
-		Console.WriteLine(item.City);
-		await OnDeleteRequest.InvokeAsync(item);
-    }
+        // Placeholder delete logic
+        Console.WriteLine($"Deleting item: {item.Id} - {item.ItemDescription}");
 
+        // TODO: Call API delete endpoint here
+
+        // Close modal after delete
+        ShowModal = false;
+
+        // TODO: Redirect to home page later
+        // NavigationManager.NavigateTo("/");
+    }
 }
