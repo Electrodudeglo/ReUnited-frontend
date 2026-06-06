@@ -1,9 +1,17 @@
 ﻿@page "/founditems/edit/{Id:int}"
 @using ReUnited_frontend.DataModels
+@using System.Net.Http.Headers
 @rendermode InteractiveServer
+@inject HttpClient Http
 
 
-@if (isLoading)
+@if (!User.Authenticated)
+{
+    <div class="notification is-warning">
+        Please log in to edit reports.
+    </div>
+}
+else if (isLoading)
 {
     <p>Loading...</p>
 }
@@ -25,60 +33,89 @@ else
 }
 
 @code {
-	[Parameter]
-	public int Id { get; set; }
+    [Parameter]
+    public int Id { get; set; }
 
-	public FoundItem FoundItem { get; set; } = new();
-	public bool SuccessItem { get; set; }
+    public FoundItem FoundItem { get; set; } = new();
+    public bool SuccessItem { get; set; }
 
-	public bool isLoading = true;
-	public string? errorMessage;
+    public bool isLoading = true;
+    public string? errorMessage;
 
-	public HttpClient Client = new HttpClient();
-
-	protected override async Task OnInitializedAsync()
-	{
-		try
-		{
-			// Load the item from the API
-			FoundItem? response = await Client.GetFromJsonAsync<FoundItem>(
-				$"http://localhost:5265/api/founditems/{Id}");
-
-			if (response == null)
-			{
-				errorMessage = "Could not load found item.";
-			}
-			else
-			{
-				FoundItem = response;
-			}
-		}
-		catch (Exception ex)
-		{
-			errorMessage = $"Error loading item: {ex.Message}";
-		}
-
-		isLoading = false;
-	}
-
-	private async Task HandleSave(FoundItem updatedItem)
-	{
-			
+    protected override async Task OnInitializedAsync()
+    {
         try
         {
-            var response = await Client.PutAsJsonAsync<FoundItem>(
+            // Load the item from the API
+            FoundItem? response = await Http.GetFromJsonAsync<FoundItem>(
+                $"http://localhost:5265/api/founditems/{Id}");
+
+            if (response == null)
+            {
+                errorMessage = "Could not load found item.";
+            }
+            else
+            {
+                FoundItem = response;
+
+                if (!User.Authenticated)
+                {
+                    errorMessage = "You are not authorised.";
+                    isLoading = false;
+                    return;
+                }
+
+                if (FoundItem.UserId != User.UserId)
+                {
+                    errorMessage = "You do not own this item.";
+                    isLoading = false;
+                    return;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading item: {ex.Message}";
+        }
+
+    }
+
+    private async Task HandleSave(FoundItem updatedItem)
+    {
+
+        try
+        {
+            Http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                User.Token);
+
+            var response = await Http.PutAsJsonAsync<FoundItem>(
                 $"http://localhost:5265/api/founditems/{Id}",
                 updatedItem);
 
             if (response.IsSuccessStatusCode)
             {
                 SuccessItem = true;
-                
             }
             else
             {
-                errorMessage = "Failed to update item.";
+                var responseBody =
+                    await response.Content.ReadAsStringAsync();
+
+                errorMessage =
+                    $"Status: {(int)response.StatusCode} {response.StatusCode}\n{responseBody}";
             }
+
+            // if (response.IsSuccessStatusCode)
+            // {
+            //     SuccessItem = true;
+
+            // }
+            // else
+            // {
+            //     errorMessage = "Failed to update item.";
+            // }
         }
         catch (Exception ex)
         {
