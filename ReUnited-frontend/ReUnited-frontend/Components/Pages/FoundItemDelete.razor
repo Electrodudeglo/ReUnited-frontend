@@ -1,6 +1,9 @@
 ﻿@page "/founditems/delete/{Id:int}"
 @using ReUnited_frontend.DataModels
+@using System.Net.Http.Headers
 @inject NavigationManager nav
+@inject HttpClient Http
+
 
 <h3>Delete Confirmation</h3>
 
@@ -38,9 +41,12 @@ else
     {
         try
         {
-            var http = new HttpClient();
+            Http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    User.Token);
 
-            item = await http.GetFromJsonAsync<FoundItem>(
+            item = await Http.GetFromJsonAsync<FoundItem>(
                 $"http://localhost:5265/api/founditems/{Id}"
             );
         }
@@ -54,9 +60,7 @@ else
     {
         try
         {
-            var http = new HttpClient();
-
-            await http.DeleteAsync(
+            await Http.DeleteAsync(
                 $"http://localhost:5265/api/founditems/{Id}"
             );
 
