@@ -1,5 +1,6 @@
 ﻿@using ReUnited_frontend.DataModels
 @page "/founditems/{Id:int}"
+@inject HttpClient Http
 
 <div style="">  
     @if (FoundItem == null)
@@ -20,16 +21,17 @@
 @code {
     [Parameter]
     public FoundItem? FoundItem { get; set; }
+
     [Parameter]
     public int Id { get; set; }
-    public HttpClient Client = new HttpClient();
+
     public bool isLoading = true;
     private string? errorMessage = String.Empty;
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            FoundItem = await Client.GetFromJsonAsync<FoundItem>($"http://localhost:5265/api/founditems/{Id}");
+            FoundItem = await Http.GetFromJsonAsync<FoundItem>($"http://localhost:5265/api/founditems/{Id}");
             isLoading = false;
         }
         catch (Exception ex)
