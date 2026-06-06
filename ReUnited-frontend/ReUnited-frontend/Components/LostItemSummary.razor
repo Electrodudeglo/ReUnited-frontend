@@ -60,6 +60,9 @@ else
 
     [Parameter] public LostItem LostItem { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     public bool ShowModal { get; set; } = false;
 
     private void ShowDeleteModal()
@@ -83,6 +86,6 @@ else
         ShowModal = false;
 
         // TODO: Redirect to home page later
-        // NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/lostitems", forceLoad: true);
     }
 }
