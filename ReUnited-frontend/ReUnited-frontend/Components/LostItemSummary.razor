@@ -1,8 +1,6 @@
 ﻿@if (ShowModal)
 {
-    <LostItemDeleteModal OnClose="HandleModalClose"
-                         OnConfirmDelete="HandleDeleteConfirmed"
-                         Item="LostItem" />
+    <LostItemDeleteModal OnClose="HandleModalClose" OnConfirmDelete="HandleDeleteConfirmed" Item="LostItem" />
 }
 else
 {
@@ -57,6 +55,7 @@ else
 
 @code {
     @using ReUnited_frontend.DataModels
+    @using Microsoft.AspNetCore.Components
     @rendermode InteractiveServer
 
     [Parameter] public LostItem LostItem { get; set; }
