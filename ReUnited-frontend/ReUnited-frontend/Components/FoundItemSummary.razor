@@ -4,7 +4,7 @@
 
     <div class="found-item-card">
 
-		<img src="@FoundItem.Picture"
+        <img src="@FoundItem.Picture"
              alt="Found item image"
              class="found-item-image" />
 
@@ -17,7 +17,7 @@
             <p>@FoundItem.City @FoundItem.Postcode</p>
         </div>
 
-        
+
         <div class="map-preview">
             <a href="https://www.google.com/maps"
                target="_blank"
@@ -30,7 +30,7 @@
         </div>
 
 
-       
+
 
         <div class="details-grid">
             <p><strong>Email:</strong> @FoundItem.Email</p>
@@ -39,16 +39,20 @@
             <p class="mb-5"><strong>Notes:</strong> @FoundItem.AdditionalInformation</p>
         </div>
 
-        <footer class="card-footer">
-            <NavLink class="card-footer-item button mr-5"
-                     href="@($"/founditems/edit/{FoundItem.Id}")">
-                Edit
-            </NavLink>
+        @if (User.Authenticated && FoundItem.UserId == User.UserId)
+        {
+            <footer class="card-footer">
+                <NavLink class="card-footer-item button mr-5"
+                         href="@($"/founditems/edit/{FoundItem.Id}")">
+                    Edit
+                </NavLink>
 
-            <a class="card-footer-item button is-danger">
-                Delete
-            </a>
-        </footer>
+                <a class="card-footer-item button is-danger">
+                    Delete
+                </a>
+            </footer>
+        }
+
 
     </div>
 
