@@ -1,5 +1,13 @@
 ﻿@using ReUnited_frontend.DataModels
 
+@if(ShowModal)
+{
+    <LostItemDeleteModal HideModal="HideModal"
+                         Modal="OnHandleModal" />
+}
+
+else {
+
 <div class="lost-item-page">
 
     <div class="lost-item-card">
@@ -29,9 +37,6 @@
             </a>
         </div>
 
-
-       
-
         <div class="details-grid">
             <p><strong>Email:</strong> @LostItem.Email</p>
             <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
@@ -45,7 +50,7 @@
                 Edit
             </NavLink>
 
-            <a class="card-footer-item button is-danger">
+            <a class="card-footer-item button is-danger" @onclick="ToggleModal">
                 Delete
             </a>
         </footer>
@@ -53,10 +58,41 @@
     </div>
 
 </div>
-
+}
 
 
 @code {
+    @rendermode InteractiveServer
+
+
     [Parameter]
     public LostItem LostItem { get; set; }
+
+    [Parameter]
+    public EventCallback<LostItem> OnDeleteRequest { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> updateModal { get; set; }
+
+    public bool ShowModal { get; set; } = false;
+
+    public bool HideModal { get; set; }
+
+    public void ToggleModal()
+    {
+        ShowModal = true;
+    }
+
+    public async Task OnHandleModal(bool value)
+    {
+        ShowModal = value;
+        StateHasChanged();
+    }
+
+    private async Task DeleteRequest(LostItem item)
+    {
+		Console.WriteLine(item.City);
+		await OnDeleteRequest.InvokeAsync(item);
+    }
+
 }
