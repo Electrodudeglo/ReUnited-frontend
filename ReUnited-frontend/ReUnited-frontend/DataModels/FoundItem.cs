@@ -22,6 +22,8 @@ namespace ReUnited_frontend.DataModels
 
         public string Picture { get; set; } = string.Empty;
 
+        public string UserId { get; set; } = "";
+
         public FoundItem(
             int id,
             string city,
@@ -31,7 +33,8 @@ namespace ReUnited_frontend.DataModels
             string category,
             string itemDescription,
             string additionalInformation,
-            string picture)
+            string picture,
+            string userId)
         {
             Id = id;
             City = city;
@@ -42,6 +45,7 @@ namespace ReUnited_frontend.DataModels
             ItemDescription = itemDescription;
             AdditionalInformation = additionalInformation;
             Picture = picture;
+            UserId = userId;
         }
 
         public FoundItem() { }
