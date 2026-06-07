@@ -115,8 +115,9 @@
         User.Authenticated = false;
         Http.DefaultRequestHeaders.Authorization = null;
 
+        ToastMessage.Message = "Logout successful";
         Nav.NavigateTo("/", forceLoad: true);
 
-        ToastMessage.Message = "Logout successful";
+        
     }
 }
