@@ -7,6 +7,18 @@
 }
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // If a message exists, start the auto-hide timer
+        if (!string.IsNullOrWhiteSpace(ToastMessage.Message))
+        {
+            await Task.Delay(2000);   // 2 seconds
+            ToastMessage.Message = null;
+            StateHasChanged();
+        }
+    }
+
     
     private void Clear()
     {

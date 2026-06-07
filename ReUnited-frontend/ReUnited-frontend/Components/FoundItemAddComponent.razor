@@ -18,6 +18,9 @@
             Submitted!
         </div>
 
+        <div>
+            <NavLink href="@($"/my-found-items")">View Your Found Items!</NavLink>
+        </div>
     </div>
 }
 
@@ -153,7 +156,8 @@ else
     }
 
     private async Task HandleValidSubmit()
-    {
+    {   
+
         await OnSave.InvokeAsync((FoundItem, selectedFile));
     }
 }
