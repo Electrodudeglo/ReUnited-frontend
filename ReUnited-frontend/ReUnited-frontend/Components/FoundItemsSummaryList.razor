@@ -51,11 +51,6 @@
                 <th>Category</th>
                 <th>Additional Information</th>
                 <th>Image</th>
-                @if (User.Authenticated)
-                {
-                    <th>Edit</th>
-                    <th>Delete</th>
-                }
             </tr>
         </thead>
         <tbody>
@@ -82,17 +77,6 @@
                                  alt="@item.ItemDescription" />
                         </figure>
                     </td>
-                    @if (User.Authenticated)
-                    {
-                        <td>
-                            <button class="button is-white">Edit</button>
-                        </td>
-
-                        <td>
-                            <button class="button is-danger" @onclick="ChangeModal">Delete</button>
-                        </td>
-                    }
-
                 </tr>
             }
         </tbody>
