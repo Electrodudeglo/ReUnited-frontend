@@ -101,17 +101,37 @@
         }
     </div>
 
-
 </nav>
 
+
+@if(Toast)
+{
+    
+    <div class="notification is-primary mb-0">
+        <button class="delete" @onclick="ToggleToast"></button>
+        Logged in
+    </div>
+
+}
+
 @code {
+
+    public bool Toast { get; set; } = true;
+
     private void LogOut()
     {
         User.Token = "";
         User.UserId = "";
-        User.Authenticated = false;
+        User.Authenticated = true;
         Http.DefaultRequestHeaders.Authorization = null;
 
         Nav.NavigateTo("/", forceLoad: true);
     }
+
+    public void ToggleToast()
+    {
+        Toast = false;
+    }
+
+
 }
