@@ -6,27 +6,37 @@
 @inject HttpClient Http
 @inject NavigationManager Nav
 
-<h3>Create Account</h3>
+<div class="columns is-centered">
+    <div class="column is-one-third">
+        <label class="label">Email</label>
 
-<div class="field">
-    <label>Email</label>
+        <div class="control">
+            <InputText class="input"
+                       @bind-Value="Email"
+                       placeholder="Email" />
+        </div>
 
-    <InputText class="input"
-               @bind-Value="Email" />
+        <div class="field">
+            <label class="label">Password</label>
+
+            <div class="control">
+                <InputText class="input"
+                           type="password"
+                           @bind-Value="Password"
+                           placeholder="Password" />
+            </div>
+        </div>
+
+        <div class="buttons is-centered">
+            <div class="navbar-item">
+                <a class="button is-primary" @onclick="RegisterAsync">
+                    <strong>Create Account</strong>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="field">
-    <label>Password</label>
-
-    <InputText class="input"
-               type="password"
-               @bind-Value="Password" />
-</div>
-
-<button class="button is-primary"
-        @onclick="RegisterAsync">
-    Create Account
-</button>
 
 <p>@Message</p>
 
