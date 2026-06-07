@@ -6,6 +6,8 @@ namespace ReUnited_frontend.DataModels
     {
         public int Id { get; set; }
 
+        public DateOnly DateFound { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+
         public string City { get; set; } = string.Empty;
 
         public string Postcode { get; set; } = string.Empty;
@@ -26,6 +28,7 @@ namespace ReUnited_frontend.DataModels
 
         public FoundItem(
             int id,
+            DateOnly dateFound,
             string city,
             string postcode,
             string email,
@@ -37,6 +40,7 @@ namespace ReUnited_frontend.DataModels
             string userId)
         {
             Id = id;
+            DateFound = dateFound;
             City = city;
             Postcode = postcode;
             Email = email;

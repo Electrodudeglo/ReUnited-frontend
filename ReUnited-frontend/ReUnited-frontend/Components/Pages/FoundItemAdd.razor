@@ -65,6 +65,11 @@ else
 
             content.Add(
                 new StringContent(
+                    data.Item.DateFound.ToString("yyyy-MM-dd")),
+                "DateFound");
+
+            content.Add(
+                new StringContent(
                     data.Item.Email ?? string.Empty),
                 "Email");
 
