@@ -1,66 +1,123 @@
 ﻿@using ReUnited_frontend.DataModels
-
-<div class="found-item-page">
-
-    <div class="found-item-card">
-
-        <img src="@FoundItem.Picture"
-             alt="Found item image"
-             class="found-item-image" />
-
-        <h3 class="title is-5 has-text-centered" style="color: #eee;">
-            @FoundItem.ItemDescription
-        </h3>
-
-        <div class="found-box">
-            <p class="has-text-weight-semibold">Found at</p>
-            <p>@FoundItem.City @FoundItem.Postcode</p>
-        </div>
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
 
 
-        <div class="map-preview">
-            <a href="https://www.google.com/maps"
-               target="_blank"
-               rel="noopener noreferrer">
+@if (ShowModal)
+{
+    <FoundItemDeleteModal OnClose="HandleModalClose" OnConfirmDelete="HandleDeleteConfirmed" Item="FoundItem" />
+}
 
-                <img src="Images/maps.png"
-                     class="map-image"
-                     alt="Map preview" />
-            </a>
-        </div>
+else
+{
+
+    <div class="found-item-page">
+
+        <div class="found-item-card">
+
+            <img src="@FoundItem.Picture"
+            alt="Found item image"
+            class="found-item-image" />
+
+            <h3 class="title is-5 has-text-centered" style="color: #eee;">
+                @FoundItem.ItemDescription
+            </h3>
+
+            <div class="found-box">
+                <p class="has-text-weight-semibold">Found at</p>
+                <p>@FoundItem.City @FoundItem.Postcode</p>
+            </div>
 
 
+            <div class="map-preview">
+                <a href="https://www.google.com/maps"
+                target="_blank"
+                rel="noopener noreferrer">
 
-
-        <div class="details-grid">
-            <p><strong>Email:</strong> @FoundItem.Email</p>
-            <p><strong>Phone:</strong> @FoundItem.PhoneNumber</p>
-            <p><strong>Category:</strong> @FoundItem.Category</p>
-            <p class="mb-5"><strong>Notes:</strong> @FoundItem.AdditionalInformation</p>
-        </div>
-
-        @if (User.Authenticated && FoundItem.UserId == User.UserId)
-        {
-            <footer class="card-footer">
-                <NavLink class="card-footer-item button mr-5"
-                         href="@($"/founditems/edit/{FoundItem.Id}")">
-                    Edit
-                </NavLink>
-
-                <a class="card-footer-item button is-danger">
-                    Delete
+                    <img src="Images/maps.png"
+                    class="map-image"
+                    alt="Map preview" />
                 </a>
-            </footer>
-        }
+            </div>
 
+
+
+
+            <div class="details-grid">
+                <p><strong>Email:</strong> @FoundItem.Email</p>
+                <p><strong>Phone:</strong> @FoundItem.PhoneNumber</p>
+                <p><strong>Category:</strong> @FoundItem.Category</p>
+                <p class="mb-5"><strong>Notes:</strong> @FoundItem.AdditionalInformation</p>
+            </div>
+
+            @if (User.Authenticated && FoundItem.UserId == User.UserId)
+            {
+                <footer class="card-footer">
+                    <NavLink class="card-footer-item button mr-5"
+                    href="@($"/founditems/edit/{FoundItem.Id}")">
+                        Edit
+                    </NavLink>
+
+                    <a class="card-footer-item button is-danger">
+                        Delete
+                    </a>
+                </footer>
+            }
+
+
+        </div>
 
     </div>
-
-</div>
-
+}
 
 
 @code {
-    [Parameter]
-    public FoundItem FoundItem { get; set; }
+    [Parameter] public FoundItem FoundItem { get; set; } = new();
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public HttpClient Http { get; set; } = new();
+
+    public bool ShowModal { get; set; } = false;
+
+    private bool Debug = true;
+
+    private void ShowDeleteModal()
+    {
+        ShowModal = true;
+    }
+
+    private void HandleModalClose()
+    {
+        ShowModal = false;
+    }
+
+    private async Task HandleDeleteConfirmed(FoundItem item)
+    {
+        try
+        {
+            var url = $"http://localhost:5265/api/founditems/{item.Id}";
+            var response = await Http.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Deleted item {item.Id}");
+
+                ShowModal = false;
+
+                // Redirect home
+                NavigationManager.NavigateTo("/founditems");
+            }
+            else
+            {
+                Console.WriteLine($"Delete failed: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Delete error: {ex.Message}");
+        }
+    }
 }
