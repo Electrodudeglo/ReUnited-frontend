@@ -1,0 +1,110 @@
+﻿@if (ShowModal)
+{
+    <LostItemDeleteModal OnClose="HandleModalClose" OnConfirmDelete="HandleDeleteConfirmed" Item="LostItem" />
+}
+else
+{
+    <div class="lost-item-page">
+        <div class="lost-item-card">
+
+            <img src="@LostItem.Picture"
+                 alt="Lost item image"
+                 class="lost-item-image" />
+
+            <h3 class="title is-5 has-text-centered" style="color: #eee;">
+                @LostItem.ItemDescription
+            </h3>
+
+            <div class="found-box">
+                <p class="has-text-weight-semibold">Found at</p>
+                <p>@LostItem.City @LostItem.Postcode</p>
+            </div>
+
+            <div class="map-preview">
+                <a href="https://www.google.com/maps"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <img src="Images/maps.png"
+                         class="map-image"
+                         alt="Map preview" />
+                </a>
+            </div>
+
+            <div class="details-grid">
+                <p><strong>Email:</strong> @LostItem.Email</p>
+                <p><strong>Phone:</strong> @LostItem.PhoneNumber</p>
+                <p><strong>Category:</strong> @LostItem.Category</p>
+                <p class="mb-5"><strong>Notes:</strong> @LostItem.AdditionalInformation</p>
+            </div>
+
+            <footer class="card-footer">
+                <NavLink class="card-footer-item button mr-5"
+                         href="@($"/lostitems/edit/{LostItem.Id}")">
+                    Edit
+                </NavLink>
+
+                <a class="card-footer-item button is-danger"
+                   @onclick="ShowDeleteModal">
+                    Delete
+                </a>
+            </footer>
+
+        </div>
+    </div>
+}
+
+@code {
+@using ReUnited_frontend.DataModels
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
+
+    [Parameter] public LostItem LostItem { get; set; } = new();
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public HttpClient Http { get; set; } = new();
+
+    public bool ShowModal { get; set; } = false;
+
+    private bool Debug = true;
+
+    private void ShowDeleteModal()
+    {
+        ShowModal = true;
+    }
+
+    private void HandleModalClose()
+    {
+        ShowModal = false;
+    }
+
+private async Task HandleDeleteConfirmed(LostItem item)
+{
+    try
+    {
+        var url = $"http://localhost:5265/api/lostitems/{item.Id}";
+        var response = await Http.DeleteAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"Deleted item {item.Id}");
+
+            ShowModal = false;
+
+            // Redirect home
+            NavigationManager.NavigateTo("/lostitems");
+        }
+        else
+        {
+            Console.WriteLine($"Delete failed: {response.StatusCode}");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Delete error: {ex.Message}");
+    }
+  }
+
+}

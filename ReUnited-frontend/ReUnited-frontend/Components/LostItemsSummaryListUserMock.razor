@@ -16,7 +16,7 @@
             <div class="buttons">
                 @if (IsFilterDropdownOpen)
                 {
-                    
+
                     foreach (var cat in Categories)
                     {
                         <button type=button class="button @(cat.IsSelected ? "is-primary is-outlined" : "is-dark is-outlined")" @onclick="() => ToggleCategory(cat)">
@@ -33,11 +33,11 @@
 <br />
 
 <div class="table-container">
-@if (ShowModal)
-{
-    <FoundItemDeleteModal HideModal="HideModal"
-                         Modal="OnHandleModal" />
-}
+    @if (ShowModal)
+    {
+        <LostItemDeleteModal HideModal="HideModal"
+                             Modal="OnHandleModal" />
+    }
 
 </div>
 
@@ -51,24 +51,24 @@
                 <th>Category</th>
                 <th>Additional Information</th>
                 <th>Image</th>
-                @if (User.Authenticated)
-                {
+
                     <th>Edit</th>
                     <th>Delete</th>
-                }
+
             </tr>
         </thead>
         <tbody>
 
-            @foreach (var item in FoundItems)
+            @foreach (var item in LostItems.TakeLast(2))
             {
+
                 if (CheckIfFilter() && !IsFilterContains(item))
                 {
                     continue;
                 }
                 <tr>
                     <th>
-                        <NavLink href="@($"/founditems/{item.Id}")">
+                        <NavLink href="@($"/lostitems/{item.Id}")">
                             @item.ItemDescription
                         </NavLink>
                     </th>
@@ -82,16 +82,17 @@
                                  alt="@item.ItemDescription" />
                         </figure>
                     </td>
-                    @if (User.Authenticated)
-                    {
-                        <td>
-                            <button class="button is-white">Edit</button>
+                    <td>
+                        <NavLink class="button is-white mr-5"
+                                 href="@($"/lostitems/edit/{item.Id}")">
+                            Edit
+                        </NavLink>
                         </td>
 
                         <td>
                             <button class="button is-danger" @onclick="ChangeModal">Delete</button>
                         </td>
-                    }
+                    
 
                 </tr>
             }
@@ -100,17 +101,18 @@
 </div>
 
 
+
+
 @code {
-
     [Parameter]
-    public List<FoundItem> FoundItems { get; set; } = new();
+    public List<LostItem> LostItems { get; set; } = new();
 
-    public List<CategoryItem> Categories { get; set; } = FoundItemCategories.GetCategories();
+    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
 
     public bool IsFilterDropdownOpen { get; set; }
 
     [Parameter]
-    public EventCallback<FoundItem> OnDeleteRequested { get; set; }
+    public EventCallback<LostItem> OnDeleteRequested { get; set; }
 
     [Parameter]
     public EventCallback<bool> UpdateModal { get; set; }
@@ -143,7 +145,7 @@
         return false;
     }
 
-    public bool IsFilterContains(FoundItem item)
+    public bool IsFilterContains(LostItem item)
     {
         foreach (var category in Categories)
         {
@@ -167,7 +169,7 @@
         StateHasChanged();
     }
 
-    private async Task DeleteRequested(FoundItem item)
+    private async Task DeleteRequested(LostItem item)
     {
         await OnDeleteRequested.InvokeAsync(item);
     }
