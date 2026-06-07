@@ -64,6 +64,15 @@ else
         </div>
 
         <div class="field">
+            <label class="label">Date Found</label>
+            <div class="control">
+                <InputDate class="input"
+                           @bind-Value="FoundItem.DateFound" />
+            </div>
+            <ValidationMessage For="@(() => FoundItem.DateFound)" />
+        </div>
+
+        <div class="field">
             <label class="label">Category</label>
 
             <div class="control">
