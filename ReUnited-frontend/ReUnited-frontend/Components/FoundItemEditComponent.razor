@@ -59,6 +59,20 @@ else
     </div>
 
     <div class="field">
+        <label class="label">Date Found</label>
+        <div class="control">
+            <InputDate class="input"
+                       @bind-Value="EditFoundItem.DateFound" />
+            <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+            </span>
+            <span class="icon is-small is-right">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+    </div>
+
+    <div class="field">
         <label class="label">Category</label>
         <div class="control">
             <div class="select">
