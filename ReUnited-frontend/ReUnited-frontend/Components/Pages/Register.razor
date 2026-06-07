@@ -1,0 +1,72 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+
+@using ReUnited_frontend.DataModels
+
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<h3>Create Account</h3>
+
+<div class="field">
+    <label>Email</label>
+
+    <InputText class="input"
+               @bind-Value="Email" />
+</div>
+
+<div class="field">
+    <label>Password</label>
+
+    <InputText class="input"
+               type="password"
+               @bind-Value="Password" />
+</div>
+
+<button class="button is-primary"
+        @onclick="RegisterAsync">
+    Create Account
+</button>
+
+<p>@Message</p>
+
+@code {
+    private string Email = "";
+    private string Password = "";
+    private string Message = "";
+
+    private async Task RegisterAsync()
+    {
+        try
+        {
+            var request =
+                new RegisterRequest
+                {
+                    Email = Email,
+                    Password = Password
+                };
+
+            var response =
+                await Http.PostAsJsonAsync(
+                    "api/auth/register",
+                    request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Message =
+                    "Account created successfully.";
+
+                Nav.NavigateTo("/login");
+            }
+            else
+            {
+                Message =
+                    await response.Content.ReadAsStringAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Message = ex.Message;
+        }
+    }
+}

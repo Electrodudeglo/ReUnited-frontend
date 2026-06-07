@@ -35,7 +35,7 @@
 <div class="table-container">
 @if (ShowModal)
 {
-    <LostItemDeleteModal HideModal="HideModal"
+    <FoundItemDeleteModal HideModal="HideModal"
                          Modal="OnHandleModal" />
 }
 
@@ -60,7 +60,7 @@
         </thead>
         <tbody>
 
-            @foreach (var item in LostItems)
+            @foreach (var item in FoundItems)
             {
                 if (CheckIfFilter() && !IsFilterContains(item))
                 {
@@ -68,7 +68,7 @@
                 }
                 <tr>
                     <th>
-                        <NavLink href="@($"/lostitems/{item.Id}")">
+                        <NavLink href="@($"/founditems/{item.Id}")">
                             @item.ItemDescription
                         </NavLink>
                     </th>
@@ -103,14 +103,14 @@
 @code {
 
     [Parameter]
-    public List<LostItem> LostItems { get; set; } = new();
+    public List<FoundItem> FoundItems { get; set; } = new();
 
-    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+    public List<CategoryItem> Categories { get; set; } = FoundItemCategories.GetCategories();
 
     public bool IsFilterDropdownOpen { get; set; }
 
     [Parameter]
-    public EventCallback<LostItem> OnDeleteRequested { get; set; }
+    public EventCallback<FoundItem> OnDeleteRequested { get; set; }
 
     [Parameter]
     public EventCallback<bool> UpdateModal { get; set; }
@@ -143,7 +143,7 @@
         return false;
     }
 
-    public bool IsFilterContains(LostItem item)
+    public bool IsFilterContains(FoundItem item)
     {
         foreach (var category in Categories)
         {
@@ -167,7 +167,7 @@
         StateHasChanged();
     }
 
-    private async Task DeleteRequested(LostItem item)
+    private async Task DeleteRequested(FoundItem item)
     {
         await OnDeleteRequested.InvokeAsync(item);
     }

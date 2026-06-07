@@ -1,12 +1,19 @@
-﻿@page "/lostitems/add"
+﻿@page "/founditems/add"
 @rendermode InteractiveServer
 @using ReUnited_frontend.DataModels
+@inject HttpClient Http
 
 
-@if (LostItem == null)
+@if (!User.Authenticated)
+{
+    <div class="notification is-warning">
+        Please log in before submitting a found item.
+    </div>
+}
+else if (FoundItem == null)
 {
     <div>
-        <h3>Cannot add lost item</h3>
+        <h3>Cannot add found item</h3>
         <p>@errorMessage</p>
     </div>
 }
@@ -21,8 +28,8 @@ else
     <div class="fixed-grid has-3-cols">
         <div class="grid">
             <div class="cell is-col-start-2">
-                <LostItemAddComponent LostItem="@LostItem" OnSave="SaveLostItem"
-                  SuccessMessage="SuccessItem"/>
+                <FoundItemAddComponent FoundItem="@FoundItem" OnSave="SaveFoundItem"
+                                       SuccessMessage="SuccessItem" />
             </div>
 
         </div>
@@ -31,18 +38,17 @@ else
 
 
 @code {
-    private LostItem? LostItem { get; set; } = new();
+    private FoundItem? FoundItem { get; set; } = new();
 
     [Parameter]
     public int Id { get; set; }
 
-    private HttpClient Client = new HttpClient();
     public bool isLoading = true;
     private string? errorMessage;
     public bool SuccessItem { get; set; }
 
 
-    private async Task SaveLostItem((LostItem Item, IBrowserFile? File) data)
+    private async Task SaveFoundItem((FoundItem Item, IBrowserFile? File) data)
     {
         try
         {
@@ -102,10 +108,18 @@ else
                     data.File.Name);
             }
 
+            Http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue(
+                    "Bearer",
+                    User.Token);
+
+            Console.WriteLine($"Token: {User.Token}");
+            Console.WriteLine($"Length: {User.Token?.Length}");
+
             var response =
-                await Client.PostAsync(
-                    "http://localhost:5265/api/lostitems", 
-                    content);
+        await Http.PostAsync(
+            "http://localhost:5265/api/founditems",
+            content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -113,7 +127,15 @@ else
             }
             else
             {
-                errorMessage = "Failed to update item.";
+                var responseBody =
+    await response.Content.ReadAsStringAsync();
+
+                errorMessage =
+                    $"Status: {(int)response.StatusCode} " +
+                    $"{response.StatusCode}\n\n" +
+                    responseBody;
+
+                // errorMessage = "Failed to update item.";
             }
 
             isLoading = false;

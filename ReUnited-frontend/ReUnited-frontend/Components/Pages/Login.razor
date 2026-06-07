@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http.Headers;
 @using ReUnited_frontend.DataModels
+@using System.IdentityModel.Tokens.Jwt;
 
 
 @page "/login"
@@ -63,6 +64,17 @@
 
         token = await response.Content.ReadAsStringAsync();
         token = token.Trim('"');
+
+        var handler =
+    new JwtSecurityTokenHandler();
+
+        var jwt =
+            handler.ReadJwtToken(token);
+
+        User.UserId =
+            jwt.Claims
+               .FirstOrDefault(c => c.Type == "sub")
+               ?.Value ?? "";
 
         if (string.IsNullOrWhiteSpace(token))
         {

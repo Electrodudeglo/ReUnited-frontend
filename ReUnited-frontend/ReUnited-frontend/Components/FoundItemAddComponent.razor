@@ -23,7 +23,7 @@
 
 else
 {
-    <EditForm Model="@LostItem" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="@FoundItem" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
 
         <div class="field">
@@ -32,11 +32,11 @@ else
             <div class="control">
                 <InputText class="input"
                            placeholder="e.g. Black iPhone 15 with a cracked screen"
-                           @bind-Value="LostItem.ItemDescription" />
+                           @bind-Value="FoundItem.ItemDescription" />
             </div>
 
             <p class="help is-danger">
-                <ValidationMessage For="@(() => LostItem.ItemDescription)" />
+                <ValidationMessage For="@(() => FoundItem.ItemDescription)" />
             </p>
         </div>
 
@@ -45,9 +45,9 @@ else
             <div class="control">
                 <InputText class="input"
                            placeholder="e.g. London"
-                           @bind-Value="LostItem.City" />
+                           @bind-Value="FoundItem.City" />
             </div>
-            <ValidationMessage For="@(() => LostItem.City)" />
+            <ValidationMessage For="@(() => FoundItem.City)" />
         </div>
 
         <div class="field">
@@ -55,9 +55,9 @@ else
             <div class="control">
                 <InputText class="input"
                            placeholder="e.g. SW1A 1AA"
-                           @bind-Value="LostItem.Postcode" />
+                           @bind-Value="FoundItem.Postcode" />
             </div>
-            <ValidationMessage For="@(() => LostItem.Postcode)" />
+            <ValidationMessage For="@(() => FoundItem.Postcode)" />
         </div>
 
         <div class="field">
@@ -65,7 +65,7 @@ else
 
             <div class="control">
                 <div class="select is-fullwidth">
-                    <InputSelect @bind-Value="LostItem.Category">
+                    <InputSelect @bind-Value="FoundItem.Category">
                         <option value="">Select Category</option>
                         @foreach (var cat in Categories)
                         {
@@ -80,8 +80,8 @@ else
             <label class="label">Additional Information</label>
             <div class="control">
                 <InputTextArea class="textarea"
-                               placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was lost."
-                               @bind-Value="LostItem.AdditionalInformation" />
+                               placeholder="Provide any additional details that may help identify the item, such as colour, brand, distinguishing marks, or where it was found."
+                               @bind-Value="FoundItem.AdditionalInformation" />
             </div>
         </div>
 
@@ -91,10 +91,10 @@ else
             <div class="control">
                 <InputText class="input"
                            placeholder="e.g. name@example.com"
-                           @bind-Value="LostItem.Email" />
+                           @bind-Value="FoundItem.Email" />
             </div>
 
-            <ValidationMessage For="@(() => LostItem.Email)" />
+            <ValidationMessage For="@(() => FoundItem.Email)" />
         </div>
 
         <div class="field">
@@ -103,15 +103,15 @@ else
             <div class="control">
                 <InputText class="input"
                            placeholder="e.g. 07123456789"
-                           @bind-Value="LostItem.PhoneNumber" />
+                           @bind-Value="FoundItem.PhoneNumber" />
             </div>
 
             <p class="help is-danger">
-                <ValidationMessage For="@(() => LostItem.PhoneNumber)" />
+                <ValidationMessage For="@(() => FoundItem.PhoneNumber)" />
             </p>
         </div>
 
-        <PictureUploadComponent LostItem="LostItem" OnFileSelected="HandleFileSelected" />
+        <PictureUploadComponent FoundItem="FoundItem" OnFileSelected="HandleFileSelected" />
 
         <div class="field is-grouped">
             <div class="control">
@@ -134,17 +134,17 @@ else
 
 @code {
     [Parameter]
-    public LostItem LostItem { get; set; } = new();
+    public FoundItem FoundItem { get; set; } = new();
 
     [Parameter]
-    public EventCallback<(LostItem Item, IBrowserFile? File)> OnSave { get; set; }
+    public EventCallback<(FoundItem Item, IBrowserFile? File)> OnSave { get; set; }
 
     [Parameter]
     public bool SuccessMessage { get; set; } = false;
 
     private IBrowserFile? selectedFile;
 
-    public List<CategoryItem> Categories { get; set; } = LostItemCategories.GetCategories();
+    public List<CategoryItem> Categories { get; set; } = FoundItemCategories.GetCategories();
 
     private Task HandleFileSelected(IBrowserFile file)
     {
@@ -154,6 +154,6 @@ else
 
     private async Task HandleValidSubmit()
     {
-        await OnSave.InvokeAsync((LostItem, selectedFile));
+        await OnSave.InvokeAsync((FoundItem, selectedFile));
     }
 }
