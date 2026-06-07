@@ -11,10 +11,7 @@
         Please log in to edit reports.
     </div>
 }
-else if (isLoading)
-{
-    <p>Loading...</p>
-}
+
 else if (errorMessage != null)
 {
     <div class="notification is-danger">
@@ -39,7 +36,6 @@ else
     public FoundItem FoundItem { get; set; } = new();
     public bool SuccessItem { get; set; }
 
-    public bool isLoading = true;
     public string? errorMessage;
 
     protected override async Task OnInitializedAsync()
@@ -60,15 +56,13 @@ else
 
                 if (!User.Authenticated)
                 {
-                    errorMessage = "You are not authorised.";
-                    isLoading = false;
+                    errorMessage = "You are not authorised.";   
                     return;
                 }
 
                 if (FoundItem.UserId != User.UserId)
                 {
                     errorMessage = "You do not own this item.";
-                    isLoading = false;
                     return;
                 }
             }
