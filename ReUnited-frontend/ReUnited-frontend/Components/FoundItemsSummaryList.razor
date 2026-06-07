@@ -32,14 +32,6 @@
 
 <br />
 
-<div class="table-container">
-@if (ShowModal)
-{
-    <FoundItemDeleteModal HideModal="HideModal"
-                         Modal="OnHandleModal" />
-}
-
-</div>
 
 <div class="container is-fluid">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
@@ -51,11 +43,6 @@
                 <th>Category</th>
                 <th>Additional Information</th>
                 <th>Image</th>
-                @if (User.Authenticated)
-                {
-                    <th>Edit</th>
-                    <th>Delete</th>
-                }
             </tr>
         </thead>
         <tbody>
@@ -82,17 +69,6 @@
                                  alt="@item.ItemDescription" />
                         </figure>
                     </td>
-                    @if (User.Authenticated)
-                    {
-                        <td>
-                            <button class="button is-white">Edit</button>
-                        </td>
-
-                        <td>
-                            <button class="button is-danger" @onclick="ChangeModal">Delete</button>
-                        </td>
-                    }
-
                 </tr>
             }
         </tbody>
@@ -108,16 +84,6 @@
     public List<CategoryItem> Categories { get; set; } = FoundItemCategories.GetCategories();
 
     public bool IsFilterDropdownOpen { get; set; }
-
-    [Parameter]
-    public EventCallback<FoundItem> OnDeleteRequested { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> UpdateModal { get; set; }
-
-    public bool ShowModal { get; set; } = false;
-
-    public bool HideModal { get; set; }
 
     public void ToggleFilterDropDown()
     {
@@ -155,21 +121,4 @@
 
         return false;
     }
-
-    public void ChangeModal()
-    {
-        ShowModal = true;
-    }
-
-    public async Task OnHandleModal(bool value)
-    {
-        ShowModal = value; // false → hide modal
-        StateHasChanged();
-    }
-
-    private async Task DeleteRequested(FoundItem item)
-    {
-        await OnDeleteRequested.InvokeAsync(item);
-    }
-
 }
