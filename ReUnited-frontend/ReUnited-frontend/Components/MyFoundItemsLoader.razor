@@ -2,7 +2,17 @@
 @using System.Net.Http.Headers
 @inject HttpClient Http
 
-@if (_foundItems.Any())
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="notification is-warning">
+        @errorMessage
+    </div>
+}
+else if (_foundItems.Any())
 {
     <div>
         <FoundItemsSummaryList FoundItems="_foundItems" />
@@ -16,21 +26,61 @@ else
 @code {
 
     private List<FoundItem> _foundItems = new();
+    private string? errorMessage;
+    private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
     {
-        Http.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(
-                "Bearer",
-                User.Token);
-
-        var response =
-            await Http.GetFromJsonAsync<List<FoundItem>>(
-                "http://localhost:5265/api/founditems/myitems");
-
-        if (response != null)
+        try
         {
-            _foundItems = response;
+            if (!User.Authenticated)
+            {
+                errorMessage =
+                    "Please log in to view your found items.";
+
+                return;
+            }
+
+            Http.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    User.Token);
+
+            var response =
+                await Http.GetAsync(
+                    "http://localhost:5265/api/founditems/myitems");
+
+            if (response.StatusCode ==
+                       System.Net.HttpStatusCode.Unauthorized)
+            {
+                errorMessage =
+                    "Please log in to view your found items.";
+
+                return;
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage =
+                    $"Server returned {(int)response.StatusCode}";
+
+                return;
+            }
+
+            var items =
+                await response.Content
+                    .ReadFromJsonAsync<List<FoundItem>>();
+
+            _foundItems = items ?? new();
+        }
+        catch (Exception ex)
+        {
+            errorMessage =
+                $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 }
