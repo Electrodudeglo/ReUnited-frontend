@@ -40,6 +40,7 @@
                 <th>Item</th>
                 <th>City</th>
                 <th>Postcode</th>
+                <th>Date Found</th>
                 <th>Category</th>
                 <th>Additional Information</th>
                 <th>Image</th>
@@ -61,6 +62,9 @@
                     </th>
                     <td>@item.City</td>
                     <td>@item.Postcode</td>
+                    <td>
+                        @item.DateFound.ToString("dd/MM/yyyy")
+                    </td>
                     <td>@item.Category</td>
                     <td class="truncate">@item.AdditionalInformation</td>
                     <td>
