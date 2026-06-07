@@ -32,14 +32,6 @@
 
 <br />
 
-<div class="table-container">
-@if (ShowModal)
-{
-    <FoundItemDeleteModal HideModal="HideModal"
-                         Modal="OnHandleModal" />
-}
-
-</div>
 
 <div class="container is-fluid">
     <table class="table is-striped is-hoverable is-fullwidth is-bordered">
@@ -93,16 +85,6 @@
 
     public bool IsFilterDropdownOpen { get; set; }
 
-    [Parameter]
-    public EventCallback<FoundItem> OnDeleteRequested { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> UpdateModal { get; set; }
-
-    public bool ShowModal { get; set; } = false;
-
-    public bool HideModal { get; set; }
-
     public void ToggleFilterDropDown()
     {
         IsFilterDropdownOpen = !IsFilterDropdownOpen;
@@ -139,21 +121,4 @@
 
         return false;
     }
-
-    public void ChangeModal()
-    {
-        ShowModal = true;
-    }
-
-    public async Task OnHandleModal(bool value)
-    {
-        ShowModal = value; // false → hide modal
-        StateHasChanged();
-    }
-
-    private async Task DeleteRequested(FoundItem item)
-    {
-        await OnDeleteRequested.InvokeAsync(item);
-    }
-
 }
