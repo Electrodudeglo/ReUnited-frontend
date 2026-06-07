@@ -1,0 +1,35 @@
+﻿@inject  Services.ToastService ToastService
+
+@if (Visible)
+{
+    <div class="notification is-primary">
+        <button class="delete" @onclick="Hide"></button>
+        @Message
+    </div>
+}
+
+@code {
+    private bool Visible;
+    private string Message = "";
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += Show;
+    }
+
+    private void Show(string message)
+    {
+        InvokeAsync(() =>
+        {
+            Message = message;
+            Visible = true;
+            // StateHasChanged();
+        });
+    }
+
+    private void Hide()
+    {
+        Visible = false;
+    }
+}
+
