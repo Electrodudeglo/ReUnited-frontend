@@ -6,7 +6,7 @@ namespace ReUnited_frontend.DataModels
     {
         public int Id { get; set; }
 
-        public DateOnly DateFound { get; set; }
+        public DateOnly DateFound { get; set; } = DateOnly.FromDateTime(DateTime.Today);
 
         public string City { get; set; } = string.Empty;
 
