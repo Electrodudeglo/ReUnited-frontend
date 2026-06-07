@@ -87,6 +87,7 @@
         User.Token = token;
         User.Authenticated = true;
 
+        ToastMessage.Message = "Login successful";
         Nav.NavigateTo("/", forceLoad: true);
     }
 }

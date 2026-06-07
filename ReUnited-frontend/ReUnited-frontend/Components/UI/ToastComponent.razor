@@ -1,0 +1,16 @@
+﻿@if (!string.IsNullOrWhiteSpace(ToastMessage.Message))
+{
+    <div class="notification is-primary mb-0">
+        <button class="delete" @onclick="Clear"></button>
+        @ToastMessage.Message
+    </div>
+}
+
+@code {
+    
+    private void Clear()
+    {
+        ToastMessage.Message = null;
+    }
+}
+
