@@ -65,8 +65,10 @@
             {
                 Message =
                     "Account created successfully.";
+                
 
-                Nav.NavigateTo("/login");
+                ToastMessage.Message = "registration successful";
+                Nav.NavigateTo("/login", forceLoad: true);
             }
             else
             {
