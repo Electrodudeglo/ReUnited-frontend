@@ -1,0 +1,36 @@
+﻿@using ReUnited_frontend.DataModels
+@using System.Net.Http.Headers
+@inject HttpClient Http
+
+@if (_foundItems.Any())
+{
+    <div>
+        <FoundItemsSummaryList FoundItems="_foundItems" />
+    </div>
+}
+else
+{
+    <p>No found items submitted yet.</p>
+}
+
+@code {
+
+    private List<FoundItem> _foundItems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                User.Token);
+
+        var response =
+            await Http.GetFromJsonAsync<List<FoundItem>>(
+                "http://localhost:5265/api/founditems/myitems");
+
+        if (response != null)
+        {
+            _foundItems = response;
+        }
+    }
+}
