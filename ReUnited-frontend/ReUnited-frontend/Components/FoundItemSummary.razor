@@ -22,6 +22,10 @@ else
             <div class="found-box">
                 <p class="has-text-weight-semibold">Found at</p>
                 <p>@FoundItem.City @FoundItem.Postcode</p>
+                <p>
+                    <strong>Date Found:</strong>
+                    @FoundItem.DateFound.ToString("dd/MM/yyyy")
+                </p>
             </div>
             <div class="map-preview">
                 <a href="https://www.google.com/maps"
