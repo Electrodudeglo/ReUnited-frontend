@@ -118,9 +118,6 @@ else
                     "Bearer",
                     User.Token);
 
-            Console.WriteLine($"Token: {User.Token}");
-            Console.WriteLine($"Length: {User.Token?.Length}");
-
             var response =
         await Http.PostAsync(
             "http://localhost:5265/api/founditems",
